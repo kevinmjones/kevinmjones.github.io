@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+---
+<Layout title="Kevin Jones">
+  <h1>Kevin Jones</h1>
+  <p>
+    I build systems and agent tooling — mostly at the intersection of
+    LLM orchestration and quantitative trading. Comfortable reverse-engineering
+    wire protocols, gluing together multi-agent workflows, and shipping small
+    sharp tools that do one thing well.
+  </p>
+
+  <div class="now">
+    <strong>Currently:</strong> running a multi-agent supervisor on Alpaca
+    paper trading; iterating a Polymarket strategy daemon; tinkering with
+    a Qidi 3D printer over a reverse-engineered UDP protocol.
+  </div>
+
+  {posts.length > 0 && (
+    <>
+      <h2>Recent writing</h2>
+      <ul class="entry-list">
+        {posts.map((post) => (
+          <li>
+            <div class="meta">
+              {post.data.pubDate.toISOString().slice(0, 10)}
+            </div>
+            <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
+            <p>{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <p style="margin-top:2rem">
+    More on the <a href="/projects">projects</a> page, or check out the
+    <a href="/blog">blog</a> for the journey behind them.
+  </p>
+</Layout>

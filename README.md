@@ -1,27 +1,34 @@
-# [Start Bootstrap](http://startbootstrap.com/) - [Freelancer](http://startbootstrap.com/template-overviews/freelancer/)
+# kevinmjones.github.io
 
-[Freelancer](http://startbootstrap.com/template-overviews/freelancer/) is a one page freelancer portfolio theme for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/). This theme features several content sections, a responsive portfolio grid with hover effects, full page portfolio item modals, and a working PHP contact form.
+Personal portfolio + blog. Astro 5, deployed to GitHub Pages via Actions.
 
-## Getting Started
+## Local dev
 
-To begin using this template, choose one of the following options to get started:
-* [Download the latest release on Start Bootstrap](http://startbootstrap.com/template-overviews/freelancer/)
-* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-freelancer.git`
-* Fork the repo
+```bash
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # outputs to dist/
+```
 
-## Bugs and Issues
+## Adding a blog post
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-freelancer/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/freelancer/).
+Drop a markdown file into `src/content/blog/<slug>.md` with frontmatter:
 
-## Creator
+```yaml
+---
+title: "Post title"
+description: "One-paragraph summary"
+pubDate: 2026-04-30
+tags: [tag1, tag2]
+---
+```
 
-Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
+Push to `master` and the GitHub Action builds and deploys.
 
-* https://twitter.com/davidmillerskt
-* https://github.com/davidtmiller
+## Stack
 
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
-
-## Copyright and License
-
-Copyright 2013-2016 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-freelancer/blob/gh-pages/LICENSE) license.
+- [Astro 5](https://astro.build) (static, content collections, MDX)
+- IBM Plex Sans (body), JetBrains Mono (code) via Google Fonts
+- Light/dark theme toggle (CSS custom properties + `localStorage`)
+- Shiki syntax highlighting
+- RSS at `/rss.xml`, sitemap at `/sitemap-index.xml`

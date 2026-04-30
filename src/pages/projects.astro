@@ -1,0 +1,112 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+interface Project {
+  name: string;
+  pitch: string;
+  stack: string;
+  status: 'active' | 'maintained' | 'archived';
+  link?: string;
+}
+
+const tier1: Project[] = [
+  {
+    name: 'qidi-research',
+    pitch:
+      'Reverse-engineered the Qidi X-CF Pro 3D printer\'s proprietary UDP/3000 wire protocol to drive it from a Unix CLI — and wired it into a parametric OpenSCAD-to-printer pipeline.',
+    stack: 'Python · OpenSCAD · PrusaSlicer · Wine',
+    status: 'active',
+    link: 'https://github.com/kevinmjones/qidi-research',
+  },
+  {
+    name: 'alpacaman',
+    pitch:
+      'Multi-agent day-trading system: a LangGraph supervisor coordinates research, risk, execution, and reporting agents against the Alpaca paper-trading API.',
+    stack: 'Python · LangGraph · Alpaca · vectorbt · Docker',
+    status: 'active',
+  },
+  {
+    name: 'polykali',
+    pitch:
+      'Algorithmic Polymarket trading bot with a custom risk daemon, delegation logic, and a quantitative research harness for tuning live strategies.',
+    stack: 'Python · Polymarket on-chain · async pipelines',
+    status: 'active',
+  },
+];
+
+const tier2: Project[] = [
+  {
+    name: 'TARS',
+    pitch:
+      'Servo controller and hardware-mock layer for a TARS robot replica. Runs without hardware for development; ships PCA9685 / MG996R drivers for real builds.',
+    stack: 'Python · I²C · servo control',
+    status: 'maintained',
+  },
+  {
+    name: 'sesame',
+    pitch:
+      'Real-time conversational voice agent: CSM-1B TTS + faster-whisper STT + pluggable LLM, served over FastAPI / WebSockets.',
+    stack: 'Python · FastAPI · WebSockets · faster-whisper · CSM',
+    status: 'maintained',
+  },
+  {
+    name: 'politics',
+    pitch:
+      'Kalshi prediction-market bot using Octagon Deep Research + an LLM ensemble for structured event bets.',
+    stack: 'Python · Kalshi API · async data ingestion',
+    status: 'active',
+  },
+  {
+    name: 'llmz',
+    pitch:
+      'A visual gallery of identical one-shot HTML generations across ~17 frontier LLMs. Useful for at-a-glance comparison of model aesthetics.',
+    stack: 'static site · multi-provider API client',
+    status: 'maintained',
+  },
+];
+---
+<Layout title="projects" description="Projects by Kevin Jones">
+  <h1>Projects</h1>
+  <p>
+    Things I've built, mostly in Python, mostly involving LLMs, agents, or
+    automating something that resisted being automated.
+  </p>
+
+  <h2>Headliners</h2>
+  <ul class="entry-list">
+    {tier1.map((p) => (
+      <li>
+        <div class="meta">
+          <span class="tag">{p.status}</span>
+          <span>{p.stack}</span>
+        </div>
+        <h3>
+          {p.link
+            ? <a href={p.link}>{p.name}</a>
+            : <span>{p.name}</span>
+          }
+        </h3>
+        <p>{p.pitch}</p>
+      </li>
+    ))}
+  </ul>
+
+  <h2>Also working on</h2>
+  <ul class="entry-list">
+    {tier2.map((p) => (
+      <li>
+        <div class="meta">
+          <span class="tag">{p.status}</span>
+          <span>{p.stack}</span>
+        </div>
+        <h3>
+          {p.link
+            ? <a href={p.link}>{p.name}</a>
+            : <span>{p.name}</span>
+          }
+        </h3>
+        <p>{p.pitch}</p>
+      </li>
+    ))}
+  </ul>
+</Layout>
