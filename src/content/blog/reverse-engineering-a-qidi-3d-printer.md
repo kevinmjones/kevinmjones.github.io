@@ -18,10 +18,10 @@ This is the story of doing both. By the end I had a parametric OpenSCAD model, a
 
 ## The reconnaissance
 
-The X-CF Pro pings fine on my LAN at `192.168.0.149`. Let's see what services it's running:
+The X-CF Pro pings fine on my LAN at its local address. Let's see what services it's running:
 
 ```bash
-nmap -Pn --top-ports 200 192.168.0.149
+nmap -Pn --top-ports 200 <printer-lan-ip>
 ```
 
 Nothing. Every standard 3D-printer port is closed: no 80 / 443 (no web UI), no 7125 (Moonraker), no 8080 (OctoPrint), no 8899 / 3000 over TCP. Just ICMP echo replies.
@@ -31,7 +31,7 @@ That's because the X-CF Pro predates the new Klipper-based Qidi line. Older Qidi
 A first attempt:
 
 ```bash
-echo "M4001" | nc -u 192.168.0.149 3000 -w2
+echo "M4001" | nc -u <printer-lan-ip> 3000 -w2
 ```
 
 I get back:

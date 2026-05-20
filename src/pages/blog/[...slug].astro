@@ -14,23 +14,215 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const pub = post.data.pubDate.toISOString().slice(0, 10);
 const updated = post.data.updatedDate?.toISOString().slice(0, 10);
+const wordCount = post.body ? post.body.split(/\s+/).filter(Boolean).length : 0;
+const readMins = Math.max(1, Math.round(wordCount / 220));
+
+type Metric = { label: string; value: string; sub: string; tone?: 'amb' | 'teal' | 'green' | 'red' | 'rose' };
+type Node = { label: string; value: string };
+type Bar = { label: string; value: string; width: number; tone?: 'amb' | 'teal' | 'green' | 'red' };
+type Visual = {
+  eyebrow: string;
+  heroTitle: string;
+  kicker: string;
+  status: string;
+  statusTone: 'amb' | 'teal' | 'green' | 'red';
+  metrics: Metric[];
+  nodes: Node[];
+  bars: Bar[];
+  hookLabel: string;
+  hook: string;
+};
+
+const visuals: Record<string, Visual> = {
+  'klax26-kalshi-lax-temperature': {
+    eyebrow: 'kevinmjones / field note / klax26',
+    heroTitle: 'Building KLAX26: a leakage-safe <em>weather market</em> system',
+    kicker: 'A research system for one recurring Kalshi contract, built from the settlement source backward.',
+    status: 'paper only',
+    statusTone: 'green',
+    metrics: [
+      { label: 'settlement source', value: 'CLI LAX', sub: 'NWS Daily Climate Report', tone: 'amb' },
+      { label: 'label audit', value: '260/261', sub: '99.6% vs populated Kalshi field', tone: 'green' },
+      { label: 'prod brier', value: '0.7286', sub: 'Iso(Residual(Climatology))', tone: 'teal' },
+      { label: 'boundary floor', value: '1.5°F', sub: 'M1 refuse/downsize zone', tone: 'amb' },
+    ],
+    nodes: [
+      { label: 'source truth', value: 'NWS CLI LAX' },
+      { label: 'data lake', value: 'provenance + available_at' },
+      { label: 'model', value: 'calibrated PMF' },
+      { label: 'risk', value: 'M1 boundary buffer' },
+      { label: 'mode', value: 'paper-only path' },
+    ],
+    bars: [
+      { label: 'CLI/Kalshi agreement', value: '99.6%', width: 99, tone: 'green' },
+      { label: 'ECE compression', value: '≈5×', width: 82, tone: 'teal' },
+      { label: 'real alpha proven', value: 'not yet', width: 18, tone: 'red' },
+    ],
+    hookLabel: 'honesty hook',
+    hook: 'All strategy P&L described here is synthetic or paper-scaffolded. The system is designed to ask the real-market question honestly; it has not answered it yet.',
+  },
+  'xrp-arbitrage-calculator': {
+    eyebrow: 'kevinmjones / field note / xrp arbitrage',
+    heroTitle: 'Building a browser-only <em>XRP arbitrage</em> scanner',
+    kicker: 'A read-only calculator that ranks cross-exchange spreads by depth-weighted VWAP after fees.',
+    status: 'read only',
+    statusTone: 'green',
+    metrics: [
+      { label: 'execution', value: '0 keys', sub: 'no auth, no balances, no orders', tone: 'green' },
+      { label: 'pricing basis', value: 'VWAP', sub: 'walks the book by notional', tone: 'teal' },
+      { label: 'presets', value: '$1k–$50k', sub: 'notional-aware ranking', tone: 'amb' },
+      { label: 'runtime', value: 'browser', sub: 'TypeScript + Vite + fetch', tone: 'rose' },
+    ],
+    nodes: [
+      { label: 'public books', value: 'venue REST APIs' },
+      { label: 'adapters', value: 'canonical OrderBook' },
+      { label: 'math', value: 'VWAP + taker fees' },
+      { label: 'ranker', value: 'net bps table' },
+      { label: 'guardrail', value: 'no execution' },
+    ],
+    bars: [
+      { label: 'security surface', value: 'small', width: 28, tone: 'green' },
+      { label: 'venue adapter pain', value: 'high', width: 78, tone: 'amb' },
+      { label: 'execution risk', value: 'none by design', width: 8, tone: 'green' },
+    ],
+    hookLabel: 'constraint',
+    hook: 'The app is intentionally a discovery layer. Once balances, keys, and execution appear, the problem becomes a trading system instead of a scanner.',
+  },
+  'reverse-engineering-a-qidi-3d-printer': {
+    eyebrow: 'kevinmjones / field note / qidi x-cf pro',
+    heroTitle: 'Reverse-engineering a Qidi printer to <em>water my plants</em>',
+    kicker: 'A closed Wi‑Fi printer, a proprietary UDP protocol, and a parametric PETG drip spout.',
+    status: 'hardware live',
+    statusTone: 'teal',
+    metrics: [
+      { label: 'wire protocol', value: 'UDP/3000', sub: 'M-code request/reply', tone: 'teal' },
+      { label: 'upload unit', value: '1280B', sub: 'chunked + ACK + retry', tone: 'amb' },
+      { label: 'artifact', value: 'qidi-send', sub: 'Linux CLI around QIDI format', tone: 'green' },
+      { label: 'watering run', value: '5–8d', sub: '20 oz bottle drip spout', tone: 'rose' },
+    ],
+    nodes: [
+      { label: 'probe', value: 'M4001 handshake' },
+      { label: 'compress', value: 'Wine + VC_compress' },
+      { label: 'upload', value: 'chunked UDP' },
+      { label: 'print', value: 'PETG spout' },
+      { label: 'use', value: 'slow watering' },
+    ],
+    bars: [
+      { label: 'stock Linux support', value: 'none', width: 8, tone: 'red' },
+      { label: 'protocol mapped', value: 'enough', width: 78, tone: 'teal' },
+      { label: 'plant survival', value: 'solved', width: 86, tone: 'green' },
+    ],
+    hookLabel: 'field lesson',
+    hook: 'The protocol was less mysterious than the workflow around it: reuse one UDP socket, drain stale packets, and print the smallest verifying geometry first.',
+  },
+};
+
+const visual = visuals[post.id] ?? {
+  eyebrow: `kevinmjones / field note / ${post.data.tags[0] ?? 'blog'}`,
+  heroTitle: post.data.title,
+  kicker: post.data.description,
+  status: 'field note',
+  statusTone: 'amb',
+  metrics: [
+    { label: 'published', value: pub, sub: 'field note date', tone: 'amb' },
+    { label: 'reading time', value: `${readMins}m`, sub: `${wordCount} words`, tone: 'teal' },
+    { label: 'tags', value: `${post.data.tags.length}`, sub: post.data.tags.join(' · '), tone: 'green' },
+    { label: 'format', value: 'report', sub: 'visual briefing + prose', tone: 'rose' },
+  ],
+  nodes: [
+    { label: 'input', value: 'problem' },
+    { label: 'system', value: 'build' },
+    { label: 'artifact', value: 'result' },
+  ],
+  bars: [
+    { label: 'prose', value: `${wordCount} words`, width: 70, tone: 'amb' },
+    { label: 'visual layer', value: 'enabled', width: 90, tone: 'green' },
+  ],
+  hookLabel: 'note',
+  hook: post.data.description,
+} satisfies Visual;
 ---
 <Layout title={post.data.title} description={post.data.description}>
-  <article>
-    <h1>{post.data.title}</h1>
-    <div class="post-meta">
-      published {pub}
-      {updated && ` · updated ${updated}`}
-      {post.data.tags.length > 0 && (
-        <>
-          &nbsp;·&nbsp;
-          {post.data.tags.map((t) => <span class="tag">{t}</span>)}
-        </>
-      )}
+  <article class="blog-article">
+    <section class="report-masthead">
+      <div>
+        <div class="eyebrow">{visual.eyebrow}</div>
+        <h1><Fragment set:html={visual.heroTitle} /></h1>
+        <p class="mast-sub">{visual.kicker}</p>
+      </div>
+      <div class="mast-meta">
+        published <b>{pub}</b><br />
+        {updated && <>updated <b>{updated}</b><br /></>}
+        read <b>{readMins} min</b><br />
+        <span class={`clock ${visual.statusTone}`}>{visual.status}</span>
+      </div>
+    </section>
+
+    <div class="tape">
+      <div class="tape-track">
+        <span><span class="lbl">slug</span> <span class="v amb">{post.id}</span></span>
+        <span><span class="lbl">date</span> <span class="v">{pub}</span></span>
+        <span><span class="lbl">tags</span> <span class="v teal">{post.data.tags.join(' · ')}</span></span>
+        <span><span class="lbl">format</span> <span class="v green">visual field report</span></span>
+      </div>
     </div>
-    <Content />
+
+    <section class="article-shell">
+      <div class="section-head">
+        <div class="sec-n">00</div>
+        <div class="sec-title">Visual briefing <em>— before the prose</em></div>
+        <div class="sec-meta">generated from post facts</div>
+      </div>
+
+      <div class="gauge-grid">
+        {visual.metrics.map((metric) => (
+          <div class={`card ${metric.tone ?? 'amb'}`}>
+            <div class="card-label">{metric.label}</div>
+            <div class={`card-value ${metric.tone ?? 'amb'}`}>{metric.value}</div>
+            <div class="card-sub"><span class={`dot ${metric.tone ?? 'amb'}`}></span>{metric.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      <div class="grid-2-1">
+        <div>
+          <div class="card-title">system map <span class="badge teal">flow</span></div>
+          <div class="system-map">
+            {visual.nodes.map((node, index) => (
+              <>
+                <div class="map-node">
+                  <div class="node-label">{node.label}</div>
+                  <div class="node-value">{node.value}</div>
+                </div>
+                {index < visual.nodes.length - 1 && <div class="map-arrow">→</div>}
+              </>
+            ))}
+          </div>
+        </div>
+        <div class="panel" style="padding:1rem">
+          <div class="card-title">signal bars <span class={`badge ${visual.statusTone}`}>{visual.status}</span></div>
+          <div class="mini-bars">
+            {visual.bars.map((bar) => (
+              <div class="mini-bar">
+                <span>{bar.label}</span>
+                <span class="bar-track"><span class={`bar-fill ${bar.tone ?? 'amb'}`} style={`--w:${bar.width}%`}></span></span>
+                <strong>{bar.value}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="honesty-hook" style="margin-top:1rem">
+        <div class="hook-label">{visual.hookLabel}</div>
+        <p>{visual.hook}</p>
+      </div>
+
+      <div class="article-prose">
+        <Content />
+      </div>
+    </section>
   </article>
 
-  <hr />
-  <p><a href="/blog">← all posts</a></p>
+  <p class="backlink"><a href="/blog">← all posts</a></p>
 </Layout>
