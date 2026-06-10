@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FenixFire — How Kevin's Trading Robot Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Public+Sans:ital,wght@0,300..800;1,300..800&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf6ef; --ink:#2b2620; --soft:#6b6258; --rule:#d9d0c1;
+    --ember:#d4541f; --ember-soft:#f3ddd0; --pine:#2e6b4f; --pine-soft:#ddeae2;
+    --gold:#b07d24; --gold-soft:#f1e6cd; --slate:#3d5a73; --slate-soft:#dde7ee;
+    --maxw:880px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:"Public Sans",sans-serif; font-size:17px; line-height:1.65;
+    background-image:radial-gradient(rgba(43,38,32,.045) 1px, transparent 1px);
+    background-size:22px 22px;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+
+  /* ---------- masthead ---------- */
+  header{padding:64px 0 48px; border-bottom:3px solid var(--ink)}
+  .kicker{font-family:"Spline Sans Mono",monospace; font-size:.72rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--ember); margin-bottom:18px}
+  h1{font-family:"Fraunces",serif; font-weight:850; font-size:clamp(2.6rem,7vw,4.4rem);
+    line-height:1.02; letter-spacing:-.02em}
+  h1 .flame{color:var(--ember); font-style:italic}
+  .dek{margin-top:22px; font-size:1.25rem; color:var(--soft); max-width:42ch;
+    font-family:"Fraunces",serif; font-weight:400; font-style:italic}
+  .byline{margin-top:26px; font-family:"Spline Sans Mono",monospace; font-size:.72rem;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--soft)}
+  .byline b{color:var(--ink)}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0; border-bottom:1px solid var(--rule)}
+  .secnum{font-family:"Spline Sans Mono",monospace; font-size:.72rem; letter-spacing:.2em;
+    color:var(--gold); text-transform:uppercase; margin-bottom:10px}
+  h2{font-family:"Fraunces",serif; font-weight:750; font-size:clamp(1.7rem,4vw,2.4rem);
+    line-height:1.12; margin-bottom:20px; letter-spacing:-.01em}
+  p+p{margin-top:14px}
+  .lead{font-size:1.12rem}
+  em{font-family:"Fraunces",serif}
+  .note{margin-top:22px; padding:18px 22px; background:var(--gold-soft);
+    border-left:4px solid var(--gold); border-radius:0 10px 10px 0; font-size:.95rem}
+  .note b{font-family:"Fraunces",serif}
+
+  /* ---------- the three-desk flow ---------- */
+  .desks{display:grid; grid-template-columns:1fr; gap:0; margin-top:34px}
+  .desk{display:grid; grid-template-columns:64px 1fr; gap:20px; padding:26px 0;
+    align-items:start}
+  .desk+.desk{border-top:1px dashed var(--rule)}
+  .desk .icon{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;
+    justify-content:center;font-size:1.7rem; border:2px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink); background:#fff}
+  .desk.a .icon{background:var(--slate-soft)}
+  .desk.b .icon{background:var(--ember-soft)}
+  .desk.c .icon{background:var(--pine-soft)}
+  .desk h3{font-family:"Fraunces",serif;font-size:1.3rem;font-weight:700;margin-bottom:6px}
+  .desk h3 span{font-family:"Spline Sans Mono",monospace;font-size:.68rem;letter-spacing:.16em;
+    text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:99px;
+    vertical-align:3px;margin-left:10px}
+  .desk.a h3 span{background:var(--slate-soft);color:var(--slate)}
+  .desk.b h3 span{background:var(--ember-soft);color:var(--ember)}
+  .desk.c h3 span{background:var(--pine-soft);color:var(--pine)}
+  .desk p{font-size:.99rem;color:var(--soft)}
+  .desk p b{color:var(--ink)}
+  .arrowrow{display:flex;justify-content:center;padding:2px 0}
+  .arrowrow svg{display:block}
+
+  /* ---------- pipeline diagram ---------- */
+  .pipeline{margin-top:36px;background:#fff;border:2px solid var(--ink);border-radius:18px;
+    box-shadow:6px 6px 0 var(--ink); padding:30px 26px; overflow-x:auto}
+  .pipeline svg{display:block;margin:0 auto;min-width:640px}
+  .pipecap{margin-top:16px;text-align:center;font-family:"Spline Sans Mono",monospace;
+    font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+
+  /* ---------- a day timeline ---------- */
+  .timeline{margin-top:30px;position:relative;padding-left:34px}
+  .timeline::before{content:"";position:absolute;left:10px;top:8px;bottom:8px;width:3px;
+    background:repeating-linear-gradient(180deg,var(--ink) 0 8px,transparent 8px 14px)}
+  .tick{position:relative;padding:14px 0}
+  .tick::before{content:"";position:absolute;left:-31px;top:22px;width:13px;height:13px;
+    border-radius:50%;background:var(--paper);border:3px solid var(--ember)}
+  .tick.green::before{border-color:var(--pine)}
+  .tick.gold::before{border-color:var(--gold)}
+  .tick time{font-family:"Spline Sans Mono",monospace;font-weight:600;font-size:.82rem;
+    letter-spacing:.06em;color:var(--ember);display:block}
+  .tick.green time{color:var(--pine)} .tick.gold time{color:var(--gold)}
+  .tick h4{font-family:"Fraunces",serif;font-size:1.08rem;margin:2px 0 4px}
+  .tick p{font-size:.95rem;color:var(--soft)}
+
+  /* ---------- safety cards ---------- */
+  .safety{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:30px}
+  .scard{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:22px;
+    box-shadow:4px 4px 0 var(--ink);transition:transform .18s ease, box-shadow .18s ease}
+  .scard:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+  .scard .em{font-size:1.5rem;margin-bottom:10px;display:block}
+  .scard h4{font-family:"Fraunces",serif;font-size:1.06rem;margin-bottom:6px}
+  .scard p{font-size:.9rem;color:var(--soft)}
+
+  /* ---------- money math ---------- */
+  .ledger{margin-top:30px;background:#fff;border:2px solid var(--ink);border-radius:16px;
+    box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+  .ledger table{width:100%;border-collapse:collapse;font-size:.97rem}
+  .ledger td{padding:14px 22px;border-top:1px solid var(--rule)}
+  .ledger tr:first-child td{border-top:none}
+  .ledger td:last-child{text-align:right;font-family:"Spline Sans Mono",monospace;font-weight:600}
+  .ledger .plus{color:var(--pine)} .ledger .minus{color:var(--ember)}
+  .ledger .total td{background:var(--ink);color:var(--paper);font-weight:700}
+  .ledger .total td:last-child{color:#ffd9a8}
+
+  /* ---------- FAQ ---------- */
+  details{border:2px solid var(--ink);border-radius:12px;background:#fff;margin-top:14px;
+    box-shadow:3px 3px 0 var(--ink)}
+  summary{cursor:pointer;padding:16px 20px;font-family:"Fraunces",serif;font-weight:700;
+    font-size:1.02rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-family:"Spline Sans Mono",monospace;font-size:1.2rem;color:var(--ember)}
+  details[open] summary::after{content:"–"}
+  details .body{padding:0 20px 18px;font-size:.96rem;color:var(--soft)}
+
+  footer{padding:48px 0 70px;font-family:"Spline Sans Mono",monospace;font-size:.72rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--soft);text-align:center}
+  footer b{color:var(--ember)}
+
+  /* reveal animation */
+  @media (prefers-reduced-motion:no-preference){
+    section, header{opacity:0;transform:translateY(14px);animation:rise .7s ease forwards}
+    section:nth-of-type(1){animation-delay:.05s} section:nth-of-type(2){animation-delay:.1s}
+    section:nth-of-type(3){animation-delay:.15s} section:nth-of-type(4){animation-delay:.2s}
+    @keyframes rise{to{opacity:1;transform:none}}
+  }
+  @media(max-width:560px){.desk{grid-template-columns:48px 1fr}.desk .icon{width:48px;height:48px;font-size:1.3rem}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="kicker">A Plain-English Field Guide</div>
+  <h1>Fenix<span class="flame">Fire</span>:<br>Kevin built a very careful<br>trading robot.</h1>
+  <p class="dek">It studies the stock market every morning, suggests a handful of small trades, and a strict set of rules decides what's actually allowed. Right now, it only trades pretend money.</p>
+  <div class="byline">Status · <b>Practice mode (paper trading)</b> · Real money: <b>switched off, everywhere</b></div>
+</header>
+
+<section>
+  <div class="secnum">01 · The Big Idea</div>
+  <h2>Three desks, one strict boss</h2>
+  <p class="lead">Think of FenixFire as a tiny trading firm with three desks. The most important rule of the firm: <em>the clever desk never touches the money.</em></p>
+
+  <div class="desks">
+    <div class="desk a">
+      <div class="icon">🔍</div>
+      <div>
+        <h3>The Analyst <span>suggests</span></h3>
+        <p>Every morning it scans the market for stocks that are unusually busy, and watches the first half hour of trading. If a stock breaks above its early-morning range with conviction, the analyst writes up a suggestion: <b>"buy this, here's my exit if I'm wrong, here's my target if I'm right."</b> It can only suggest — nothing more.</p>
+      </div>
+    </div>
+    <div class="arrowrow"><svg width="40" height="34" viewBox="0 0 40 34"><path d="M20 2 v22 m-8 -8 l8 10 l8 -10" fill="none" stroke="#d4541f" stroke-width="3" stroke-linecap="round"/></svg></div>
+    <div class="desk b">
+      <div class="icon">⚖️</div>
+      <div>
+        <h3>The Risk Boss <span>decides</span></h3>
+        <p>A completely separate, <b>unbendable rulebook of 20 checks</b>. Is the bet small enough? Is too much money already in play? Have we lost twice in a row today? Is it too close to closing time? <b>One failed check = automatic no.</b> The boss can't be sweet-talked — it isn't smart, it's strict, and that's the point. It is the only one allowed to approve an order.</p>
+      </div>
+    </div>
+    <div class="arrowrow"><svg width="40" height="34" viewBox="0 0 40 34"><path d="M20 2 v22 m-8 -8 l8 10 l8 -10" fill="none" stroke="#2e6b4f" stroke-width="3" stroke-linecap="round"/></svg></div>
+    <div class="desk c">
+      <div class="icon">🤝</div>
+      <div>
+        <h3>The Clerk <span>acts</span></h3>
+        <p>Once a trade is approved, the clerk places it with a <b>safety bracket already attached</b>: a stop-loss order (sells automatically if it drops) and a profit target (sells automatically if it rises). The clerk babysits every order each minute and <b>sells everything before the market closes</b> — the robot never holds stocks overnight.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note"><b>Why this design?</b> Smart software can be wrong with great confidence. So the "smart" part is only allowed to make suggestions, and a dumb-but-strict rulebook holds the only key to the cash drawer.</div>
+</section>
+
+<section>
+  <div class="secnum">02 · Data Flow</div>
+  <h2>Where the information comes from, where the orders go</h2>
+  <p>Market prices flow in from data providers and get saved locally, so the robot can also <em>rehearse</em> against past days. Orders flow out through one — and only one — guarded door.</p>
+
+  <div class="pipeline">
+    <svg viewBox="0 0 700 290" font-family="'Public Sans',sans-serif">
+      <!-- sources -->
+      <g>
+        <rect x="10" y="20" width="150" height="54" rx="12" fill="#dde7ee" stroke="#2b2620" stroke-width="2"/>
+        <text x="85" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#2b2620">Market data</text>
+        <text x="85" y="60" text-anchor="middle" font-size="11" fill="#6b6258">prices, every minute</text>
+        <rect x="10" y="96" width="150" height="54" rx="12" fill="#dde7ee" stroke="#2b2620" stroke-width="2"/>
+        <text x="85" y="118" text-anchor="middle" font-size="13" font-weight="700" fill="#2b2620">History library</text>
+        <text x="85" y="136" text-anchor="middle" font-size="11" fill="#6b6258">years of past days</text>
+      </g>
+      <path d="M160 47 H 215" stroke="#2b2620" stroke-width="2.5" marker-end="url(#arr)"/>
+      <path d="M160 123 H 215" stroke="#2b2620" stroke-width="2.5" marker-end="url(#arr)"/>
+      <!-- brain column -->
+      <g>
+        <rect x="220" y="20" width="170" height="130" rx="14" fill="#fff" stroke="#2b2620" stroke-width="2.5"/>
+        <text x="305" y="48" text-anchor="middle" font-size="14" font-weight="800" fill="#2b2620">Analyst</text>
+        <text x="305" y="68" text-anchor="middle" font-size="11" fill="#6b6258">watches the open,</text>
+        <text x="305" y="84" text-anchor="middle" font-size="11" fill="#6b6258">writes suggestions</text>
+        <text x="305" y="118" text-anchor="middle" font-size="11" font-style="italic" fill="#3d5a73">"buy 9 shares, stop</text>
+        <text x="305" y="134" text-anchor="middle" font-size="11" font-style="italic" fill="#3d5a73">at $177, target $189"</text>
+      </g>
+      <path d="M390 85 H 445" stroke="#d4541f" stroke-width="2.5" marker-end="url(#arrE)"/>
+      <!-- gate -->
+      <g>
+        <rect x="450" y="20" width="160" height="130" rx="14" fill="#f3ddd0" stroke="#2b2620" stroke-width="2.5"/>
+        <text x="530" y="48" text-anchor="middle" font-size="14" font-weight="800" fill="#2b2620">Risk Boss</text>
+        <text x="530" y="68" text-anchor="middle" font-size="11" fill="#6b6258">20 strict checks</text>
+        <text x="530" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="#2e6b4f">✓ approve</text>
+        <text x="530" y="116" text-anchor="middle" font-size="12" font-weight="700" fill="#d4541f">✗ veto (most days!)</text>
+      </g>
+      <path d="M530 150 V 195" stroke="#2e6b4f" stroke-width="2.5" marker-end="url(#arrG)"/>
+      <!-- execution -->
+      <g>
+        <rect x="430" y="200" width="200" height="70" rx="14" fill="#ddeae2" stroke="#2b2620" stroke-width="2.5"/>
+        <text x="530" y="227" text-anchor="middle" font-size="14" font-weight="800" fill="#2b2620">Clerk</text>
+        <text x="530" y="247" text-anchor="middle" font-size="11" fill="#6b6258">places bracket orders, watches them</text>
+      </g>
+      <path d="M430 235 H 375" stroke="#2b2620" stroke-width="2.5" marker-end="url(#arrL)"/>
+      <!-- broker -->
+      <g>
+        <rect x="200" y="200" width="170" height="70" rx="14" fill="#fff" stroke="#2b2620" stroke-width="2.5" stroke-dasharray="7 5"/>
+        <text x="285" y="227" text-anchor="middle" font-size="14" font-weight="800" fill="#2b2620">Pretend broker</text>
+        <text x="285" y="247" text-anchor="middle" font-size="11" fill="#6b6258">practice money only</text>
+      </g>
+      <!-- dashboard -->
+      <g>
+        <rect x="10" y="200" width="150" height="70" rx="14" fill="#f1e6cd" stroke="#2b2620" stroke-width="2.5"/>
+        <text x="85" y="227" text-anchor="middle" font-size="14" font-weight="800" fill="#2b2620">Kevin's screen</text>
+        <text x="85" y="247" text-anchor="middle" font-size="11" fill="#6b6258">live dashboard</text>
+      </g>
+      <path d="M200 235 H 165" stroke="#b07d24" stroke-width="2.5" marker-end="url(#arrGold)"/>
+      <defs>
+        <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#2b2620"/></marker>
+        <marker id="arrE" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#d4541f"/></marker>
+        <marker id="arrG" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#2e6b4f"/></marker>
+        <marker id="arrL" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#2b2620"/></marker>
+        <marker id="arrGold" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#b07d24"/></marker>
+      </defs>
+    </svg>
+    <div class="pipecap">every arrow is one-way · suggestions can only become orders by passing the risk boss</div>
+  </div>
+
+  <p style="margin-top:24px">Everything that happens — every suggestion, every veto, every fill — is written into a permanent diary. If the program crashes and restarts, it reads the diary first, checks that its books match the broker's books, and refuses to trade if anything looks off.</p>
+</section>
+
+<section>
+  <div class="secnum">03 · A Day in the Life</div>
+  <h2>What a trading day looks like</h2>
+  <div class="timeline">
+    <div class="tick gold"><time>Before 9:30 AM</time><h4>Wake up &amp; sanity check</h4><p>Read the diary, reconcile the books, pick today's shortlist of unusually busy stocks. Yesterday's losing streak counter resets.</p></div>
+    <div class="tick"><time>9:30 – 9:35 AM</time><h4>Watch, don't touch</h4><p>The market open is chaotic. The robot just observes the first five minutes to learn each stock's opening range.</p></div>
+    <div class="tick"><time>9:35 – 11:00 AM</time><h4>The hunting window</h4><p>If a stock breaks out of its opening range on heavy volume, the analyst suggests a trade, the risk boss votes, and approved trades go in with their safety brackets. Most suggestions get vetoed — a quiet day is a normal day.</p></div>
+    <div class="tick"><time>All day, every minute</time><h4>Babysitting</h4><p>The clerk checks every open position once a minute: did the stop trigger? the target? Is anything out of sync with the broker?</p></div>
+    <div class="tick green"><time>3:50 – 3:55 PM</time><h4>Pack up, no exceptions</h4><p>Anything still open gets sold. The robot always sleeps with empty pockets — no overnight surprises.</p></div>
+    <div class="tick gold"><time>After close</time><h4>Write the diary</h4><p>Final reconciliation, profit/loss recorded, and the dashboard updates so Kevin can review the day.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="secnum">04 · The Seatbelts</div>
+  <h2>Five safety rules that can't be turned off by code</h2>
+  <div class="safety">
+    <div class="scard"><span class="em">🧪</span><h4>Practice money only</h4><p>Real trading is hard-wired off. Turning it on requires Kevin to flip a switch, hold a valid login, <em>and</em> personally write a sign-off file no program is allowed to create.</p></div>
+    <div class="scard"><span class="em">🤏</span><h4>Small bets, always</h4><p>Each trade risks a fixed sliver of the account. Hard caps stop too much money being in play at once or piled into one stock. No borrowed money, ever.</p></div>
+    <div class="scard"><span class="em">🪢</span><h4>Every trade wears a bracket</h4><p>No position exists without an automatic exit below it (the stop) and above it (the target). Losses are pre-decided and small.</p></div>
+    <div class="scard"><span class="em">🔕</span><h4>Silence means no</h4><p>When human approval is on, ideas wait in a queue on Kevin's dashboard with a countdown. If nobody clicks approve in time, the answer is automatically no.</p></div>
+    <div class="scard"><span class="em">🛑</span><h4>The big red switch</h4><p>One kill switch cancels every order, sells everything, and halts trading. It stays tripped through restarts until a human investigates and types RESET.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="secnum">05 · The Money Math</div>
+  <h2>Why the dashboard says $5,205</h2>
+  <p>The practice account started with a pretend $5,000. Over a month of rehearsed trading days, it made and lost small amounts that add up like a bank statement:</p>
+  <div class="ledger">
+    <table>
+      <tr><td>Pretend deposit (the start)</td><td>$5,000.00</td></tr>
+      <tr><td>Won across 9 winning days <span style="color:var(--soft)">— e.g. +$92.64, +$113.75…</span></td><td class="plus">+ $329.14</td></tr>
+      <tr><td>Lost across losing days <span style="color:var(--soft)">— each capped small by its bracket</span></td><td class="minus">− $124.02</td></tr>
+      <tr class="total"><td>Account today</td><td>$5,205.12</td></tr>
+    </table>
+  </div>
+  <p style="margin-top:20px">The “P&amp;L today: −$9.38” tile only describes the <em>most recent day</em> (one small losing trade). The +$205.12 is the whole month. Both are true at once — like “I spent $9 today” and “I'm up $205 this month.”</p>
+  <div class="note"><b>Honest small print:</b> 24 practice trades is far too few to prove the strategy works. The system itself stamps every report with a warning saying exactly that, and it refuses to consider real money until there's much more evidence — by design.</div>
+</section>
+
+<section>
+  <div class="secnum">06 · Questions Parents Ask</div>
+  <h2>The FAQ</h2>
+  <details><summary>So… is it using real money right now?</summary><div class="body">No. Every trade is simulated with practice money. The real-money pathway exists only as a locked door: the code's one "live" command refuses to run, full stop, even if every precondition is met.</div></details>
+  <details><summary>Could the AI go rogue and bet everything?</summary><div class="body">It can't. The AI part can only write suggestions onto a list. The only component that can place an order is the rulebook-checker, which is ordinary, non-clever code that anyone can read — and it rejects anything oversized, late, unprotected, or repeated after losses.</div></details>
+  <details><summary>What happens if the computer crashes mid-trade?</summary><div class="body">Everything important is written to disk the moment it happens. On restart, the robot reads its diary, compares its records with the broker's, adopts any orphaned positions (giving them a protective stop), and halts if the books don't match.</div></details>
+  <details><summary>Is it making money?</summary><div class="body">In a month of practice it turned $5,000 into $5,205 — about +4%. Genuinely encouraging, genuinely meaningless at this sample size. The next step is months more practice plus testing against years of historical data.</div></details>
+  <details><summary>What's with the name?</summary><div class="body">A phoenix rises from the ashes carefully and on a schedule — which is roughly the vibe: ambitious, but wearing five seatbelts.</div></details>
+</section>
+</div>
+
+<footer>FenixFire · paper-first by design · live trading <b>off</b> · made with care (and twenty vetoes)</footer>
+</body>
+</html>

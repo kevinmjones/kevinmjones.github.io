@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Kevin's Weather Computer Actually Does</title>
+<style>
+  :root {
+    --ink: #2b2926;
+    --paper: #faf7f2;
+    --card: #ffffff;
+    --accent: #b3551d;
+    --accent-soft: #f6e3d3;
+    --blue: #2c5d7c;
+    --blue-soft: #e3eef5;
+    --green: #3e6b46;
+    --green-soft: #e5efe2;
+    --rule: #e5ded2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.65;
+    font-size: 18px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+  h1 {
+    font-size: 2.1em; line-height: 1.2; margin: 0 0 8px;
+    letter-spacing: -0.5px;
+  }
+  .subtitle { color: #6f675c; font-style: italic; margin: 0 0 40px; }
+  h2 {
+    font-size: 1.35em; margin: 48px 0 12px;
+    border-bottom: 2px solid var(--rule); padding-bottom: 6px;
+  }
+  p { margin: 0 0 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 20px 24px; margin: 20px 0;
+  }
+  .steps { counter-reset: step; padding: 0; margin: 24px 0; list-style: none; }
+  .steps li {
+    counter-increment: step; position: relative;
+    padding: 0 0 20px 56px; margin: 0;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 2px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-family: Helvetica, Arial, sans-serif;
+  }
+  .steps li strong { display: block; margin-bottom: 2px; }
+  .buckets {
+    display: flex; gap: 6px; margin: 16px 0; flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif; font-size: 0.78em; text-align: center;
+  }
+  .bucket {
+    flex: 1; min-width: 86px; border-radius: 8px; padding: 10px 4px;
+    background: var(--blue-soft); border: 1px solid #c8dce9;
+  }
+  .bucket .deg { font-weight: bold; font-size: 1.15em; display: block; }
+  .bucket .p { color: var(--blue); }
+  .bucket.hot { background: var(--accent-soft); border-color: #e8c9ab; }
+  .bucket.hot .p { color: var(--accent); }
+  .example {
+    background: var(--green-soft); border: 1px solid #cbdcc6; border-radius: 10px;
+    padding: 20px 24px; margin: 20px 0;
+  }
+  .example h3 { margin: 0 0 10px; font-size: 1.05em; color: var(--green); }
+  .qa dt { font-weight: bold; margin-top: 18px; }
+  .qa dd { margin: 4px 0 0 0; }
+  .footer {
+    margin-top: 56px; padding-top: 16px; border-top: 2px solid var(--rule);
+    color: #6f675c; font-size: 0.85em; font-style: italic;
+  }
+  .money { color: var(--green); font-weight: bold; }
+  .nope { color: var(--accent); font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>What Kevin&rsquo;s Weather Computer Actually Does</h1>
+  <p class="subtitle">A plain-English explanation, no jargon allowed.</p>
+
+  <h2>The game it plays</h2>
+  <p>
+    There&rsquo;s a website called <strong>Kalshi</strong> where people can bet small amounts
+    on simple yes-or-no questions about real events. One of those questions, every single day, is:
+  </p>
+  <div class="card">
+    <strong>&ldquo;How hot will it get at Los Angeles International Airport today?&rdquo;</strong>
+  </div>
+  <p>
+    The possible answers are split into ranges, like boxes you can put your money on:
+  </p>
+  <div class="buckets">
+    <div class="bucket"><span class="deg">70&deg; or less</span><span class="p">18&cent;</span></div>
+    <div class="bucket"><span class="deg">71&ndash;72&deg;</span><span class="p">20&cent;</span></div>
+    <div class="bucket hot"><span class="deg">73&ndash;74&deg;</span><span class="p">25&cent;</span></div>
+    <div class="bucket"><span class="deg">75&ndash;76&deg;</span><span class="p">22&cent;</span></div>
+    <div class="bucket"><span class="deg">77&deg; or more</span><span class="p">15&cent;</span></div>
+  </div>
+  <p>
+    Each box has a price between 1&cent; and 99&cent;. If you buy a box for 25&cent; and the
+    temperature lands in your box, you get $1. If it doesn&rsquo;t, you lose your 25&cent;.
+    The prices move all day as people change their minds &mdash; just like a little stock market,
+    except the &ldquo;stock&rdquo; is tomorrow&rsquo;s thermometer reading.
+  </p>
+  <p>
+    At the end of the day, the National Weather Service publishes the official high temperature
+    for the airport. That official number &mdash; nobody else&rsquo;s &mdash; decides who was right.
+  </p>
+
+  <h2>How a 25&cent; box becomes a dollar</h2>
+  <svg viewBox="0 0 660 150" style="width:100%;height:auto;margin:8px 0 4px" role="img" aria-label="Buying a box for 25 cents wins one dollar if the temperature lands in it">
+    <rect x="10" y="30" width="150" height="80" rx="10" fill="#f6e3d3" stroke="#e8c9ab"/>
+    <text x="85" y="62" text-anchor="middle" font-family="Helvetica" font-size="15" font-weight="bold" fill="#2b2926">73&ndash;74&deg; box</text>
+    <text x="85" y="88" text-anchor="middle" font-family="Helvetica" font-size="14" fill="#b3551d">you pay 25&cent;</text>
+    <path d="M170 70 H 245" stroke="#6f675c" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="255" y="30" width="150" height="80" rx="10" fill="#e3eef5" stroke="#c8dce9"/>
+    <text x="330" y="58" text-anchor="middle" font-family="Helvetica" font-size="14" fill="#2b2926">official high</text>
+    <text x="330" y="86" text-anchor="middle" font-family="Helvetica" font-size="20" font-weight="bold" fill="#2c5d7c">74&deg;F</text>
+    <path d="M415 55 H 490" stroke="#3e6b46" stroke-width="2" marker-end="url(#arrg)"/>
+    <path d="M415 90 H 490" stroke="#b3551d" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arro)"/>
+    <text x="575" y="50" text-anchor="middle" font-family="Helvetica" font-size="14" font-weight="bold" fill="#3e6b46">in your box &rarr; $1.00</text>
+    <text x="575" y="100" text-anchor="middle" font-family="Helvetica" font-size="13" fill="#b3551d">missed &rarr; lose 25&cent;</text>
+    <defs>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6f675c"/></marker>
+      <marker id="arrg" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#3e6b46"/></marker>
+      <marker id="arro" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#b3551d"/></marker>
+    </defs>
+  </svg>
+
+  <h2>So what did Kevin build?</h2>
+  <p>
+    A computer program that tries to predict that official number <em>better than the crowd does</em>,
+    and spots moments when the crowd&rsquo;s prices look wrong. It works around the clock in four steps:
+  </p>
+  <ol class="steps">
+    <li>
+      <strong>It watches the weather, constantly.</strong>
+      Every few minutes it collects the actual readings from the airport&rsquo;s weather station
+      &mdash; temperature, clouds, wind &mdash; plus the official government forecasts.
+      It has also memorized over two years of LA weather history.
+    </li>
+    <li>
+      <strong>It makes its own forecast.</strong>
+      Not just one number, but odds for every box: &ldquo;30% chance of 73&ndash;74&deg;,
+      20% chance of 75&ndash;76&deg;&hellip;&rdquo; LA is tricky because of the morning fog bank
+      off the ocean (the famous &ldquo;June Gloom&rdquo;) &mdash; whether it burns off early or
+      lingers can swing the day&rsquo;s high by several degrees, so the program pays special
+      attention to the clouds before lunch.
+    </li>
+    <li>
+      <strong>It compares its odds to the prices.</strong>
+      If the program thinks a box has a 40% chance of winning but people are selling it
+      for 25&cent;, that&rsquo;s a bargain &mdash; like finding a $40 item priced at $25.
+      If there are no bargains, it does nothing. Most of the time, doing nothing
+      is the right move, and it knows that.
+    </li>
+    <li>
+      <strong>It grades its own homework.</strong>
+      Every evening it checks the official number, scores how good its forecast was,
+      writes itself a report card, and adjusts. When it&rsquo;s wrong, it studies <em>why</em>
+      it was wrong and fixes that specific weakness.
+    </li>
+  </ol>
+
+  <h2>The whole machine on one napkin</h2>
+  <svg viewBox="0 0 680 230" style="width:100%;height:auto;margin:8px 0" role="img" aria-label="Pipeline: weather data and forecasts flow into the forecast brain, which compares to market prices, decides bet or pass, and a nightly report card feeds back into the brain">
+    <defs>
+      <marker id="parr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6f675c"/></marker>
+    </defs>
+    <!-- inputs -->
+    <rect x="10" y="15" width="160" height="52" rx="9" fill="#e3eef5" stroke="#c8dce9"/>
+    <text x="90" y="37" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#2c5d7c">Airport thermometer</text>
+    <text x="90" y="55" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#2c5d7c">fresh every 5 minutes</text>
+    <rect x="10" y="85" width="160" height="52" rx="9" fill="#e3eef5" stroke="#c8dce9"/>
+    <text x="90" y="107" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#2c5d7c">Government forecasts</text>
+    <text x="90" y="125" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#2c5d7c">+ clouds, wind, fog</text>
+    <rect x="10" y="155" width="160" height="52" rx="9" fill="#e3eef5" stroke="#c8dce9"/>
+    <text x="90" y="177" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#2c5d7c">2+ years of history</text>
+    <text x="90" y="195" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#2c5d7c">what LA usually does</text>
+    <path d="M170 41 C 210 41, 210 90, 245 100" stroke="#6f675c" stroke-width="2" fill="none" marker-end="url(#parr)"/>
+    <path d="M170 111 H 245" stroke="#6f675c" stroke-width="2" fill="none" marker-end="url(#parr)"/>
+    <path d="M170 181 C 210 181, 210 130, 245 120" stroke="#6f675c" stroke-width="2" fill="none" marker-end="url(#parr)"/>
+    <!-- brain -->
+    <rect x="250" y="78" width="130" height="66" rx="12" fill="#f6e3d3" stroke="#e8c9ab"/>
+    <text x="315" y="105" text-anchor="middle" font-family="Helvetica" font-size="14" font-weight="bold" fill="#b3551d">Forecast brain</text>
+    <text x="315" y="125" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#b3551d">odds for every box</text>
+    <path d="M380 111 H 445" stroke="#6f675c" stroke-width="2" marker-end="url(#parr)"/>
+    <!-- compare -->
+    <rect x="450" y="78" width="130" height="66" rx="12" fill="#fff" stroke="#e5ded2"/>
+    <text x="515" y="100" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#2b2926">Compare with</text>
+    <text x="515" y="118" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#2b2926">market prices</text>
+    <text x="515" y="136" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#6f675c">bargain? or pass?</text>
+    <path d="M580 95 C 630 80, 650 60, 648 40" stroke="#3e6b46" stroke-width="2" fill="none" marker-end="url(#parr)"/>
+    <text x="612" y="28" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#3e6b46">pretend bet</text>
+    <path d="M580 128 C 630 145, 650 165, 648 185" stroke="#6f675c" stroke-width="2" stroke-dasharray="5 4" fill="none" marker-end="url(#parr)"/>
+    <text x="618" y="205" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#6f675c">do nothing</text>
+    <!-- feedback -->
+    <path d="M515 144 C 515 215, 315 215, 315 148" stroke="#3e6b46" stroke-width="2" stroke-dasharray="2 4" fill="none" marker-end="url(#parr)"/>
+    <text x="415" y="225" text-anchor="middle" font-family="Helvetica" font-size="12" font-style="italic" fill="#3e6b46">nightly report card &mdash; learn from every miss</text>
+  </svg>
+
+  <h2>Why the fog matters so much</h2>
+  <svg viewBox="0 0 680 210" style="width:100%;height:auto;margin:8px 0" role="img" aria-label="Two temperature curves: a clear morning climbs to 76 degrees, a foggy morning stays flat until noon and only reaches 70">
+    <line x1="50" y1="170" x2="650" y2="170" stroke="#e5ded2" stroke-width="2"/>
+    <text x="80" y="190" font-family="Helvetica" font-size="12" fill="#6f675c">6 am</text>
+    <text x="330" y="190" font-family="Helvetica" font-size="12" fill="#6f675c">noon</text>
+    <text x="590" y="190" font-family="Helvetica" font-size="12" fill="#6f675c">6 pm</text>
+    <!-- clear day -->
+    <path d="M60 150 C 180 140, 260 60, 380 42 C 460 32, 520 40, 640 70" stroke="#b3551d" stroke-width="3" fill="none"/>
+    <circle cx="395" cy="40" r="5" fill="#b3551d"/>
+    <text x="395" y="24" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#b3551d">clear morning &rarr; high of 76&deg;</text>
+    <!-- foggy day -->
+    <path d="M60 152 C 180 150, 260 148, 360 130 C 450 113, 520 110, 640 128" stroke="#2c5d7c" stroke-width="3" fill="none"/>
+    <circle cx="455" cy="112" r="5" fill="#2c5d7c"/>
+    <text x="470" y="100" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#2c5d7c">fog lingers &rarr; high of 70&deg;</text>
+    <!-- fog bank -->
+    <ellipse cx="150" cy="150" rx="95" ry="16" fill="#c8dce9" opacity="0.55"/>
+    <text x="150" y="155" text-anchor="middle" font-family="Helvetica" font-size="12" fill="#2c5d7c">morning fog bank</text>
+  </svg>
+  <p>
+    Same city, same season &mdash; six degrees apart, decided almost entirely by whether the ocean
+    fog burns off before lunch. That one question moves more money on this market than anything else,
+    which is why the program stares at the morning cloud reports the way a farmer stares at the sky.
+  </p>
+
+  <div class="example">
+    <h3>A real example from this week</h3>
+    <p>
+      One clear morning, the program predicted a cooler day than everyone else &mdash;
+      its favorite box was 71&ndash;72&deg;, while the crowd was betting on 75&ndash;76&deg;.
+      The temperature ended up in the middle. Digging into it, Kevin found two real problems:
+      the program&rsquo;s weather readings were arriving 40 minutes late, and on fog-free mornings
+      it consistently guessed a degree too cool because it leaned too hard on the recent
+      cool stretch of days.
+    </p>
+    <p style="margin-bottom:0">
+      The same day, both got fixed: it now gets readings within minutes, and it learned to use
+      the government&rsquo;s big &ldquo;blend of all forecasts&rdquo; as its starting point on
+      days that break the pattern. That fast find-the-flaw-and-fix-it loop <em>is</em> the project.
+    </p>
+  </div>
+
+  <h2>What a &ldquo;bargain&rdquo; looks like</h2>
+  <svg viewBox="0 0 680 230" style="width:100%;height:auto;margin:8px 0" role="img" aria-label="Bar chart comparing the program's odds to the market price for each temperature box; one box where the odds are far above the price is highlighted as the bargain">
+    <text x="20" y="22" font-family="Helvetica" font-size="13" fill="#6f675c">For each box: <tspan fill="#b3551d" font-weight="bold">&#9632; what the program thinks it&rsquo;s worth</tspan> vs <tspan fill="#2c5d7c" font-weight="bold">&#9632; what people are charging</tspan></text>
+    <!-- groups: x base 60, width 110 each -->
+    <!-- 70 or less: model 10, price 12 -->
+    <g font-family="Helvetica" font-size="12">
+      <rect x="70"  y="166" width="34" height="20"  fill="#b3551d"/><rect x="108" y="162" width="34" height="24" fill="#2c5d7c"/>
+      <rect x="190" y="106" width="34" height="80"  fill="#b3551d"/><rect x="228" y="146" width="34" height="40" fill="#2c5d7c"/>
+      <rect x="310" y="126" width="34" height="60"  fill="#b3551d"/><rect x="348" y="130" width="34" height="56" fill="#2c5d7c"/>
+      <rect x="430" y="156" width="34" height="30"  fill="#b3551d"/><rect x="468" y="116" width="34" height="70" fill="#2c5d7c"/>
+      <rect x="550" y="170" width="34" height="16"  fill="#b3551d"/><rect x="588" y="166" width="34" height="20" fill="#2c5d7c"/>
+      <line x1="50" y1="186" x2="650" y2="186" stroke="#e5ded2" stroke-width="2"/>
+      <text x="106" y="204" text-anchor="middle">70&deg; or less</text>
+      <text x="226" y="204" text-anchor="middle" font-weight="bold">71&ndash;72&deg;</text>
+      <text x="346" y="204" text-anchor="middle">73&ndash;74&deg;</text>
+      <text x="466" y="204" text-anchor="middle">75&ndash;76&deg;</text>
+      <text x="586" y="204" text-anchor="middle">77&deg; or more</text>
+      <text x="207" y="98"  font-weight="bold" fill="#3e6b46">40&cent; of value&hellip;</text>
+      <text x="232" y="140" fill="#3e6b46">&hellip;priced at 20&cent;</text>
+    </g>
+    <ellipse cx="226" cy="146" rx="68" ry="62" fill="none" stroke="#3e6b46" stroke-width="2.5" stroke-dasharray="6 5"/>
+    <text x="226" y="226" text-anchor="middle" font-family="Helvetica" font-size="13" font-weight="bold" fill="#3e6b46">&uarr; the bargain &mdash; the only box worth buying</text>
+  </svg>
+  <p>
+    Most boxes, most days, are priced about right &mdash; the orange and blue bars match, and the
+    program passes. It only acts when its bar towers over the price. Some days that never happens,
+    and a day with zero bets is counted as a <em>good</em> day, not a boring one.
+  </p>
+
+  <h2>The part that matters: it&rsquo;s play money</h2>
+  <p>
+    <span class="nope">No real money is at risk.</span> The system trades with
+    <strong>pretend dollars</strong> &mdash; what traders call &ldquo;paper trading.&rdquo;
+    It keeps an honest ledger of every imaginary bet, win or lose, exactly as if it were real.
+    The program is literally built so that it <em>cannot</em> place a real-money trade:
+    that mode doesn&rsquo;t exist in the code, on purpose.
+  </p>
+  <p>
+    The idea is simple: prove it works on paper first, with months of honest records.
+    Only with that proof in hand would real money &mdash; in small, strictly limited
+    amounts &mdash; ever be considered.
+  </p>
+
+  <h2>Questions you might be wondering</h2>
+  <dl class="qa">
+    <dt>Is this gambling?</dt>
+    <dd>
+      It&rsquo;s closer to insurance or farming decisions than a casino. In a casino the odds are
+      fixed against you; here, someone who genuinely predicts weather better than the crowd has a
+      real edge. Kalshi is a legal, U.S.-government-regulated exchange. And again &mdash;
+      right now it&rsquo;s all <span class="money">pretend money</span>.
+    </dd>
+    <dt>Couldn&rsquo;t you just read the weather forecast like everyone else?</dt>
+    <dd>
+      Everyone <em>does</em> &mdash; that&rsquo;s the point. To beat the crowd you need something extra:
+      faster data, better math on the fog, and the discipline to only bet when the numbers
+      genuinely disagree with the price. Computers are very good at that kind of patience.
+    </dd>
+    <dt>What does Kevin actually do all day, then?</dt>
+    <dd>
+      He&rsquo;s the mechanic, not the driver. The system runs itself; Kevin studies its report cards,
+      finds its blind spots, and upgrades it &mdash; often by directing a team of AI assistants
+      that test improvements against years of history before anything goes live.
+    </dd>
+    <dt>What if it&rsquo;s wrong?</dt>
+    <dd>
+      It&rsquo;s wrong a lot &mdash; every forecaster is. The goal isn&rsquo;t to be right every day;
+      it&rsquo;s to be slightly less wrong than the crowd, over hundreds of days. The system also has
+      safety rules: if its data feeds go quiet or its confidence is low, it refuses to bet at all.
+    </dd>
+  </dl>
+
+  <div class="footer">
+    Made for the family &mdash; June 2026. The thermometer at LAX remains undefeated.
+  </div>
+
+</div>
+</body>
+</html>
