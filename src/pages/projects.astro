@@ -11,19 +11,28 @@ interface Project {
 
 const tier1: Project[] = [
   {
+    name: 'FenixFire',
+    pitch:
+      'Paper-only stock-trading robot with separated analyst, risk boss, and execution clerk roles. The smart layer suggests; the rulebook owns approval.',
+    stack: 'Python · Alpaca paper trading · risk engine · dashboard',
+    status: 'active',
+    link: '/blog/fenixfire-careful-trading-robot/',
+  },
+  {
+    name: 'KLAX26',
+    pitch:
+      'Weather-market research system for Kalshi LAX high-temperature buckets, built around settlement provenance, calibrated forecasts, and paper-only execution.',
+    stack: 'Python · Kalshi · weather data · forecasting',
+    status: 'active',
+    link: '/blog/klax26-weather-computer-family-guide/',
+  },
+  {
     name: 'qidi-research',
     pitch:
       'Reverse-engineered the Qidi X-CF Pro 3D printer\'s proprietary UDP/3000 wire protocol to drive it from a Unix CLI — and wired it into a parametric OpenSCAD-to-printer pipeline.',
     stack: 'Python · OpenSCAD · PrusaSlicer · Wine',
     status: 'active',
     link: 'https://github.com/kevinmjones/qidi-research',
-  },
-  {
-    name: 'alpacaman',
-    pitch:
-      'Multi-agent day-trading system: a LangGraph supervisor coordinates research, risk, execution, and reporting agents against the Alpaca paper-trading API.',
-    stack: 'Python · LangGraph · Alpaca · vectorbt · Docker',
-    status: 'active',
   },
   {
     name: 'polykali',
@@ -35,6 +44,13 @@ const tier1: Project[] = [
 ];
 
 const tier2: Project[] = [
+  {
+    name: 'alpacaman',
+    pitch:
+      'Multi-agent day-trading system: a LangGraph supervisor coordinates research, risk, execution, and reporting agents against the Alpaca paper-trading API.',
+    stack: 'Python · LangGraph · Alpaca · vectorbt · Docker',
+    status: 'active',
+  },
   {
     name: 'TARS',
     pitch:

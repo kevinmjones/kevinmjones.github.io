@@ -34,6 +34,60 @@ type Visual = {
 };
 
 const visuals: Record<string, Visual> = {
+  'fenixfire-careful-trading-robot': {
+    eyebrow: 'kevinmjones / family guide / fenixfire',
+    heroTitle: 'FenixFire: a careful <em>paper-trading</em> robot',
+    kicker: 'A plain-English explanation of a stock-trading robot where the clever part suggests and a strict rulebook controls every order.',
+    status: 'paper only',
+    statusTone: 'green',
+    metrics: [
+      { label: 'mode', value: 'paper', sub: 'real money switched off', tone: 'green' },
+      { label: 'risk checks', value: '20', sub: 'one failed check means no', tone: 'amb' },
+      { label: 'holding time', value: '0 nights', sub: 'flat before market close', tone: 'teal' },
+      { label: 'sample', value: '24', sub: 'practice trades, not proof', tone: 'rose' },
+    ],
+    nodes: [
+      { label: 'data', value: 'market + history' },
+      { label: 'analyst', value: 'suggests' },
+      { label: 'risk boss', value: 'vetoes' },
+      { label: 'clerk', value: 'bracket orders' },
+      { label: 'mode', value: 'practice broker' },
+    ],
+    bars: [
+      { label: 'real money exposure', value: 'off', width: 6, tone: 'green' },
+      { label: 'automation', value: 'guarded', width: 72, tone: 'teal' },
+      { label: 'sample-size proof', value: 'not yet', width: 18, tone: 'red' },
+    ],
+    hookLabel: 'seatbelt hook',
+    hook: 'The smart component can suggest trades, but the strict component owns approval. That separation is the design, not an implementation detail.',
+  },
+  'klax26-weather-computer-family-guide': {
+    eyebrow: 'kevinmjones / family guide / klax26',
+    heroTitle: 'What Kevin’s <em>weather computer</em> actually does',
+    kicker: 'A jargon-free guide to forecasting LAX temperature buckets, comparing them to Kalshi prices, and staying paper-only.',
+    status: 'paper only',
+    statusTone: 'green',
+    metrics: [
+      { label: 'market', value: 'KLAX', sub: 'daily LAX high temperature', tone: 'amb' },
+      { label: 'question', value: 'buckets', sub: 'odds for every range', tone: 'teal' },
+      { label: 'key variable', value: 'fog', sub: 'marine layer drives misses', tone: 'rose' },
+      { label: 'execution', value: 'paper', sub: 'real-money mode absent', tone: 'green' },
+    ],
+    nodes: [
+      { label: 'weather', value: 'airport readings' },
+      { label: 'forecast', value: 'bucket odds' },
+      { label: 'market', value: 'Kalshi prices' },
+      { label: 'decision', value: 'paper bet or pass' },
+      { label: 'learning', value: 'nightly report' },
+    ],
+    bars: [
+      { label: 'fog importance', value: 'high', width: 86, tone: 'amb' },
+      { label: 'real money exposure', value: 'none', width: 6, tone: 'green' },
+      { label: 'learning loop', value: 'active', width: 78, tone: 'teal' },
+    ],
+    hookLabel: 'plain-English hook',
+    hook: 'The system is less about guessing one temperature and more about keeping honest odds, refusing bad prices, and learning from every miss.',
+  },
   'klax26-kalshi-lax-temperature': {
     eyebrow: 'kevinmjones / field note / klax26',
     heroTitle: 'Building KLAX26: a leakage-safe <em>weather market</em> system',
@@ -88,6 +142,33 @@ const visuals: Record<string, Visual> = {
     hookLabel: 'constraint',
     hook: 'The app is intentionally a discovery layer. Once balances, keys, and execution appear, the problem becomes a trading system instead of a scanner.',
   },
+  'onetrust-desktop-agent-business-debrief': {
+    eyebrow: 'kevinmjones / field note / desktop agent',
+    heroTitle: 'From prototype to <em>desktop copilot</em>',
+    kicker: 'A sanitized business debrief on packaging risk-intelligence and privacy-workflow agent ideas into an Electron desktop app.',
+    status: 'sanitized',
+    statusTone: 'green',
+    metrics: [
+      { label: 'product pages', value: '10', sub: 'desktop workflow surfaces', tone: 'amb' },
+      { label: 'ipc actions', value: '70+', sub: 'auth, agents, data, voice, vault', tone: 'teal' },
+      { label: 'packaging', value: 'DMG', sub: 'macOS build path configured', tone: 'rose' },
+      { label: 'review', value: 'PASS', sub: 'sensitive values excluded', tone: 'green' },
+    ],
+    nodes: [
+      { label: 'renderer', value: 'React workspace' },
+      { label: 'bridge', value: 'typed IPC' },
+      { label: 'services', value: 'agents + scheduler' },
+      { label: 'risk', value: 'RI workflows' },
+      { label: 'guardrail', value: 'sanitized demo' },
+    ],
+    bars: [
+      { label: 'prototype concreteness', value: 'high', width: 88, tone: 'green' },
+      { label: 'enterprise hardening', value: 'next gate', width: 58, tone: 'amb' },
+      { label: 'sensitive detail included', value: 'excluded', width: 8, tone: 'green' },
+    ],
+    hookLabel: 'sanitization hook',
+    hook: 'This post is framed as a public-safe business debrief: architecture, product value, and hardening lessons without credentials, private endpoints, raw logs, or customer data.',
+  },
   'reverse-engineering-a-qidi-3d-printer': {
     eyebrow: 'kevinmjones / field note / qidi x-cf pro',
     heroTitle: 'Reverse-engineering a Qidi printer to <em>water my plants</em>',
@@ -141,8 +222,36 @@ const visual = visuals[post.id] ?? {
   hookLabel: 'note',
   hook: post.data.description,
 } satisfies Visual;
+
+const postUrl = new URL(`/blog/${post.id}/`, Astro.site ?? 'https://kevinmjones.github.io').toString();
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.description,
+    datePublished: post.data.pubDate.toISOString(),
+    dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+    url: postUrl,
+    mainEntityOfPage: postUrl,
+    keywords: post.data.tags,
+    wordCount,
+    timeRequired: `PT${readMins}M`,
+    author: { '@type': 'Person', name: 'Kevin Jones', url: 'https://github.com/kevinmjones' },
+    publisher: { '@type': 'Person', name: 'Kevin Jones', url: 'https://kevinmjones.github.io' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kevinmjones.github.io/' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://kevinmjones.github.io/blog/' },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: postUrl },
+    ],
+  },
+];
 ---
-<Layout title={post.data.title} description={post.data.description}>
+<Layout title={post.data.title} description={post.data.description} ogType="article" schema={schema}>
   <article class="blog-article">
     <section class="report-masthead">
       <div>

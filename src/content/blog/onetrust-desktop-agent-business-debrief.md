@@ -6,20 +6,6 @@ pubDate: 2026-05-26
 tags: [onetrust, ai-agents, risk-intelligence, electron, product]
 ---
 
-<div class="report-hero">
-  <p class="eyebrow">Business debrief / OneTrust Labs / Desktop agent</p>
-  <h1>From Prototype to <em>Desktop Copilot</em></h1>
-  <p class="deck">This project turned a set of AI governance and risk-intelligence ideas into a packaged desktop experience: an Electron application that can connect authenticated product workflows, local agent tooling, voice interaction, scheduled tasks, and a purpose-built Risk Intelligence workspace.</p>
-  <div class="ticker"><span>React + Electron + TypeScript</span><span>Production build passes</span><span>Version reviewed: 0.3.0</span><span>Sensitive values intentionally excluded</span></div>
-</div>
-
-<div class="metric-grid">
-  <div><b>10</b><span>major product pages</span></div>
-  <div><b>70+</b><span>IPC actions across auth, agents, data, scheduler, voice, and vault</span></div>
-  <div><b>DMG</b><span>macOS packaging configured</span></div>
-  <div><b>PASS</b><span>TypeScript and Vite production build completed</span></div>
-</div>
-
 ## What was built
 
 The work produced a desktop application shell for privacy, governance, and risk-intelligence workflows. The app is not just a web page in a wrapper. It has a native main process, a constrained browser-to-main bridge, local storage, scheduled jobs, vault/file access, and multiple agent surfaces.
@@ -87,5 +73,5 @@ This project advanced the idea from “we can connect AI to privacy and risk wor
 <p class="sanitized-note">Prepared as a sanitized business debrief. Source review included project structure, app code, packaging configuration, existing workflow visuals, and a successful production build. No credentials, private endpoints, tokens, raw API payloads, or customer data are included.</p>
 
 <style>
-.report-hero{border:1px solid var(--rule, #2a2f38);border-radius:28px;padding:32px;margin:24px 0;background:linear-gradient(135deg,rgba(23,29,41,.95),rgba(10,12,15,.82))}.eyebrow{color:#e8a23a;letter-spacing:.22em;text-transform:uppercase;font-size:.75rem;font-weight:700}.report-hero h1{font-size:clamp(2.4rem,7vw,5rem);line-height:.98;margin:.4em 0;letter-spacing:-.04em}.report-hero h1 em{color:#e8a23a}.deck{font-size:1.1rem}.ticker{display:flex;flex-wrap:wrap;gap:.5rem}.ticker span{border:1px solid #2a3448;border-radius:999px;padding:.35rem .7rem;font-size:.78rem}.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin:2rem 0}.metric-grid div{border:1px solid #2a3448;border-radius:18px;padding:1rem;background:rgba(18,23,33,.75)}.metric-grid b{display:block;font-size:2.1rem;font-family:Georgia,serif}.metric-grid span{display:block;color:#a8adba;font-size:.85rem}.image-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.image-grid img{width:100%;border:1px solid #2a3448;border-radius:18px;background:#fff}.image-grid figcaption,.sanitized-note{color:#a8adba;font-size:.85rem}@media(max-width:760px){.metric-grid,.image-grid{grid-template-columns:1fr}}
+.image-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.image-grid img{width:100%;border:1px solid #2a3448;border-radius:18px;background:#fff}.image-grid figcaption,.sanitized-note{color:#a8adba;font-size:.85rem}@media(max-width:760px){.image-grid{grid-template-columns:1fr}}
 </style>

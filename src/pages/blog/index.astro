@@ -10,7 +10,21 @@ const rest = posts.slice(1);
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags))];
 const latestDate = latest?.data.pubDate.toISOString().slice(0, 10) ?? '—';
 
-const visualFor = (id: string) => {
+const visualFor = (id: string, tags: string[] = []) => {
+  if (id.includes('fenixfire')) {
+    return [
+      ['mode', 'paper-only', 'green'],
+      ['risk', '20 checks', 'amb'],
+      ['holding', '0 nights', 'teal'],
+    ];
+  }
+  if (id.includes('weather-computer-family-guide')) {
+    return [
+      ['mode', 'paper-only', 'green'],
+      ['market', 'KLAX', 'amb'],
+      ['driver', 'fog', 'teal'],
+    ];
+  }
   if (id.includes('klax26')) {
     return [
       ['settlement', 'NWS CLI LAX', 'amb'],
@@ -25,10 +39,24 @@ const visualFor = (id: string) => {
       ['scope', 'XRP/USD', 'amb'],
     ];
   }
+  if (id.includes('qidi')) {
+    return [
+      ['protocol', 'UDP/3000', 'teal'],
+      ['artifact', 'qidi-send', 'amb'],
+      ['print', 'PETG', 'green'],
+    ];
+  }
+  if (id.includes('onetrust')) {
+    return [
+      ['package', 'Electron', 'teal'],
+      ['review', 'sanitized', 'green'],
+      ['scope', 'risk intel', 'amb'],
+    ];
+  }
   return [
-    ['protocol', 'UDP/3000', 'teal'],
-    ['artifact', 'qidi-send', 'amb'],
-    ['print', 'PETG', 'green'],
+    ['format', 'field note', 'green'],
+    ['tags', `${tags.length}`, 'teal'],
+    ['brief', 'visual', 'amb'],
   ];
 };
 ---
@@ -73,7 +101,7 @@ const visualFor = (id: string) => {
         <div class="card-visual">
           <div class="card-title">briefing strip <span class="badge amb">open report</span></div>
           <div class="mini-bars">
-            {visualFor(latest.id).map(([label, value, tone], i) => (
+            {visualFor(latest.id, latest.data.tags).map(([label, value, tone], i) => (
               <div class="mini-bar">
                 <span>{label}</span>
                 <span class="bar-track"><span class={`bar-fill ${tone}`} style={`--w:${88 - i * 18}%`}></span></span>
@@ -99,7 +127,7 @@ const visualFor = (id: string) => {
               <h3>{post.data.title}</h3>
               <p>{post.data.description}</p>
               <div class="mini-bars">
-                {visualFor(post.id).map(([label, value, tone], i) => (
+                {visualFor(post.id, post.data.tags).map(([label, value, tone], i) => (
                   <div class="mini-bar">
                     <span>{label}</span>
                     <span class="bar-track"><span class={`bar-fill ${tone}`} style={`--w:${82 - i * 20}%`}></span></span>

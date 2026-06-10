@@ -167,6 +167,19 @@ a {
   border-bottom: 1px solid rgba(232,162,58,.35);
 }
 a:hover { border-bottom-color: var(--amber); color: var(--amber); }
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 h1, h2, h3, h4 {
   color: var(--fg);
@@ -518,7 +531,10 @@ pre code { background: transparent; border: 0; padding: 0; color: inherit; }
 :root[data-theme='light'] .astro-code span { background-color: var(--paper) !important; }
 
 table {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
   margin: 1.7rem 0;
   font-size: .82rem;

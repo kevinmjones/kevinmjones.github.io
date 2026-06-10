@@ -6,10 +6,23 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  ogType?: 'website' | 'article';
+  image?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description = 'Kevin Jones — systems & agent tooling' } = Astro.props;
+const {
+  title,
+  description = 'Kevin Jones — systems, agent tooling, reverse-engineering, and trading infrastructure field notes.',
+  ogType = 'website',
+  image = '/profile.png',
+  schema,
+} = Astro.props;
+const site = Astro.site ?? new URL('https://kevinmjones.github.io');
+const canonical = new URL(Astro.url.pathname, site).toString();
+const imageUrl = new URL(image, site).toString();
 const fullTitle = title === 'Kevin Jones' ? title : `${title} — Kevin Jones`;
+const schemaJson = schema ? JSON.stringify(schema).replace(/</g, '\\u003c') : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -18,11 +31,27 @@ const fullTitle = title === 'Kevin Jones' ? title : `${title} — Kevin Jones`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#0a0c0f" />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" type="application/rss+xml" title={fullTitle} href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Kevin Jones field notes" href="/rss.xml" />
+
+    <meta property="og:site_name" content="Kevin Jones" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=JetBrains+Mono:wght@300;400;500;700&display=swap" />
+    {schemaJson && <script type="application/ld+json" set:html={schemaJson} />}
     <title>{fullTitle}</title>
 
     {/* Pre-paint theme so there's no flash. Reads localStorage, then prefers-color-scheme. */}
