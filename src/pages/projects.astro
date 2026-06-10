@@ -6,6 +6,7 @@ interface Project {
   pitch: string;
   stack: string;
   status: 'active' | 'maintained' | 'archived';
+  accent?: string;
   link?: string;
 }
 
@@ -16,6 +17,7 @@ const tier1: Project[] = [
       'Paper-only stock-trading robot with separated analyst, risk boss, and execution clerk roles. The smart layer suggests; the rulebook owns approval.',
     stack: 'Python · Alpaca paper trading · risk engine · dashboard',
     status: 'active',
+    accent: 'var(--red)',
     link: '/blog/fenixfire-careful-trading-robot/',
   },
   {
@@ -24,6 +26,7 @@ const tier1: Project[] = [
       'Weather-market research system for Kalshi LAX high-temperature buckets, built around settlement provenance, calibrated forecasts, and paper-only execution.',
     stack: 'Python · Kalshi · weather data · forecasting',
     status: 'active',
+    accent: 'var(--teal)',
     link: '/blog/klax26-weather-computer-family-guide/',
   },
   {
@@ -32,6 +35,7 @@ const tier1: Project[] = [
       'Reverse-engineered the Qidi X-CF Pro 3D printer\'s proprietary UDP/3000 wire protocol to drive it from a Unix CLI — and wired it into a parametric OpenSCAD-to-printer pipeline.',
     stack: 'Python · OpenSCAD · PrusaSlicer · Wine',
     status: 'active',
+    accent: 'var(--green)',
     link: 'https://github.com/kevinmjones/qidi-research',
   },
   {
@@ -40,6 +44,7 @@ const tier1: Project[] = [
       'Algorithmic Polymarket trading bot with a custom risk daemon, delegation logic, and a quantitative research harness for tuning live strategies.',
     stack: 'Python · Polymarket on-chain · async pipelines',
     status: 'active',
+    accent: 'var(--rose)',
   },
 ];
 
@@ -80,49 +85,73 @@ const tier2: Project[] = [
     status: 'maintained',
   },
 ];
+
+const badgeTone = (s: Project['status']) =>
+  s === 'active' ? 'green' : s === 'maintained' ? 'teal' : '';
 ---
 <Layout title="projects" description="Projects by Kevin Jones">
-  <h1>Projects</h1>
-  <p>
-    Things I've built, mostly in Python, mostly involving LLMs, agents, or
-    automating something that resisted being automated.
-  </p>
+  <section class="report-masthead reveal">
+    <div>
+      <div class="eyebrow">kevinmjones / projects / build log</div>
+      <h1>Things that resisted <em>being automated</em>.</h1>
+      <p class="mast-sub">
+        Mostly Python, mostly involving LLMs, agents, or a protocol that wasn't
+        supposed to be driven from a Unix shell. Each headliner has a field note
+        documenting how it actually went.
+      </p>
+    </div>
+    <div class="mast-meta">
+      headliners <b>{tier1.length}</b><br />
+      also active <b>{tier2.length}</b><br />
+      default mode <b>paper / read-only</b><br />
+      <span class="clock">build log</span>
+    </div>
+  </section>
 
-  <h2>Headliners</h2>
-  <ul class="entry-list">
-    {tier1.map((p) => (
-      <li>
-        <div class="meta">
-          <span class="tag">{p.status}</span>
-          <span>{p.stack}</span>
-        </div>
-        <h3>
-          {p.link
-            ? <a href={p.link}>{p.name}</a>
-            : <span>{p.name}</span>
-          }
-        </h3>
-        <p>{p.pitch}</p>
-      </li>
-    ))}
-  </ul>
+  <div class="reveal d1">
+    <div class="section-head">
+      <div class="sec-n">01</div>
+      <div class="sec-title">Headliners <em>— the systems with receipts</em></div>
+      <div class="sec-meta">{tier1.length} projects</div>
+    </div>
+    <div class="project-grid">
+      {tier1.map((p, i) => {
+        const inner = (
+          <>
+            <div class="proj-top">
+              <h3>{p.name}</h3>
+              <span class={`badge ${badgeTone(p.status)}`}>{p.status}</span>
+            </div>
+            <p>{p.pitch}</p>
+            <div class="proj-stack">{p.stack}</div>
+            <div class="proj-index">{String(i + 1).padStart(2, '0')}</div>
+          </>
+        );
+        return p.link
+          ? <a class="project-card" href={p.link} style={`--accent:${p.accent ?? 'var(--amber)'}`}>{inner}</a>
+          : <div class="project-card" style={`--accent:${p.accent ?? 'var(--amber)'}`}>{inner}</div>;
+      })}
+    </div>
+  </div>
 
-  <h2>Also working on</h2>
-  <ul class="entry-list">
-    {tier2.map((p) => (
-      <li>
-        <div class="meta">
-          <span class="tag">{p.status}</span>
-          <span>{p.stack}</span>
+  <div class="reveal d2">
+    <div class="section-head">
+      <div class="sec-n">02</div>
+      <div class="sec-title">Also working on <em>— the supporting cast</em></div>
+      <div class="sec-meta">{tier2.length} projects</div>
+    </div>
+    <div class="project-grid">
+      {tier2.map((p, i) => (
+        <div class="project-card" style="--accent:var(--rule)">
+          <div class="proj-top">
+            <h3>{p.name}</h3>
+            <span class={`badge ${badgeTone(p.status)}`}>{p.status}</span>
+          </div>
+          <p>{p.pitch}</p>
+          <div class="proj-stack">{p.stack}</div>
+          <div class="proj-index">{String(i + 5).padStart(2, '0')}</div>
         </div>
-        <h3>
-          {p.link
-            ? <a href={p.link}>{p.name}</a>
-            : <span>{p.name}</span>
-          }
-        </h3>
-        <p>{p.pitch}</p>
-      </li>
-    ))}
-  </ul>
+      ))}
+    </div>
+  </div>
 </Layout>

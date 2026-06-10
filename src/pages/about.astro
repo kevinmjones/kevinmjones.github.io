@@ -1,34 +1,103 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const interests = [
+  {
+    label: 'agents',
+    title: 'Multi-agent LLM orchestration',
+    body: 'Supervisors, delegation, durable state — and the guardrails that keep an autonomous system honest.',
+    tone: 'amb',
+  },
+  {
+    label: 'markets',
+    title: 'Quantitative trading on novel venues',
+    body: 'Prediction markets, options, weather contracts. Paper-first until the system proves it deserves real capital.',
+    tone: 'teal',
+  },
+  {
+    label: 'browser',
+    title: 'Headless control via CDP',
+    body: 'Browser automation built on the Chrome DevTools Protocol — compositor-level clicks, not brittle selectors.',
+    tone: 'green',
+  },
+  {
+    label: 'hardware',
+    title: 'Hardware-adjacent software',
+    body: '3D printers on reverse-engineered protocols, microcontrollers, servo control, real-time voice interfaces.',
+    tone: 'rose',
+  },
+];
 ---
 <Layout title="about" description="About Kevin Jones">
-  <h1>About</h1>
+  <section class="report-masthead reveal">
+    <div>
+      <div class="eyebrow">kevinmjones / about / operator profile</div>
+      <h1>Indie systems builder, <em>end-to-end</em>.</h1>
+      <p class="mast-sub">
+        I work mostly in Python, write a fair amount of TypeScript, and reach for
+        whatever else fits the job. Lately that's been LangGraph supervisors,
+        prediction-market bots, and the occasional 3D printer protocol hack.
+      </p>
+    </div>
+    <div class="mast-meta">
+      forecasting <b>KLAX</b><br />
+      primary <b>python</b><br />
+      secondary <b>typescript</b><br />
+      <span class="clock">open to interesting problems</span>
+    </div>
+  </section>
 
-  <p>
-    I'm Kevin — an indie systems builder. I work mostly in Python, write a
-    fair amount of TypeScript, and reach for whatever else fits the job.
-    Lately that's been LangGraph supervisors, prediction-market bots, and
-    the occasional 3D printer firmware hack.
-  </p>
+  <div class="reveal d1">
+    <div class="section-head">
+      <div class="sec-n">01</div>
+      <div class="sec-title">Operating principles</div>
+      <div class="sec-meta">how I build</div>
+    </div>
+    <p>
+      I like small tools that compose. I like reverse-engineering proprietary
+      protocols when the open path doesn't exist yet. I like building something
+      end-to-end on a weekend rather than designing a perfect abstraction across
+      six. And I'd rather publish a build log with the caveats left in than a
+      launch post with them sanded off.
+    </p>
+  </div>
 
-  <p>
-    I like small tools that compose. I like reverse-engineering proprietary
-    protocols when the open path doesn't exist yet. I like building
-    something end-to-end on a weekend rather than designing a perfect
-    abstraction across six.
-  </p>
+  <div class="reveal d2">
+    <div class="section-head">
+      <div class="sec-n">02</div>
+      <div class="sec-title">Current obsessions</div>
+      <div class="sec-meta">{interests.length} threads</div>
+    </div>
+    <div class="grid-2" style="margin-bottom:2.4rem">
+      {interests.map((it) => (
+        <div class={`card ${it.tone}`}>
+          <div class="card-label">{it.label}</div>
+          <h3 style="margin:.1rem 0 .6rem">{it.title}</h3>
+          <p style="margin:0;font-size:.86rem">{it.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
 
-  <h2>What I'm interested in</h2>
-  <ul>
-    <li>Multi-agent LLM orchestration — supervisors, delegation, durable state</li>
-    <li>Quantitative trading on novel venues (prediction markets, options, paper)</li>
-    <li>Browser automation and headless control via Chrome DevTools Protocol</li>
-    <li>Hardware-adjacent software — 3D printers, microcontrollers, voice interfaces</li>
-  </ul>
-
-  <h2>Get in touch</h2>
-  <p>
-    <a href="mailto:kevinmjones@gmail.com">kevinmjones@gmail.com</a> ·
-    <a href="https://github.com/kevinmjones">github.com/kevinmjones</a>
-  </p>
+  <div class="reveal d3">
+    <div class="section-head">
+      <div class="sec-n">03</div>
+      <div class="sec-title">Get in touch</div>
+      <div class="sec-meta">async preferred</div>
+    </div>
+    <div class="contact-strip">
+      <a href="mailto:kevinmjones@gmail.com">
+        <span class="lbl">email</span>
+        kevinmjones@gmail.com
+      </a>
+      <a href="https://github.com/kevinmjones">
+        <span class="lbl">github</span>
+        github.com/kevinmjones
+      </a>
+      <a href="/rss.xml">
+        <span class="lbl">rss</span>
+        field notes feed
+      </a>
+    </div>
+  </div>
 </Layout>

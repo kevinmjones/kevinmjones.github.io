@@ -3,43 +3,93 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const recent = posts.slice(0, 4);
+const latestDate = posts[0]?.data.pubDate.toISOString().slice(0, 10) ?? '—';
 ---
 <Layout title="Kevin Jones">
-  <h1>Kevin Jones</h1>
-  <p>
-    I build systems and agent tooling — mostly at the intersection of
-    LLM orchestration and quantitative trading. Comfortable reverse-engineering
-    wire protocols, gluing together multi-agent workflows, and shipping small
-    sharp tools that do one thing well.
-  </p>
+  <div class="home-hero">
+    <section class="report-masthead reveal">
+      <div>
+        <div class="eyebrow">kevinmjones / operations console</div>
+        <h1>Systems that <span class="accent">earn</span> their autonomy.</h1>
+        <p class="mast-sub">
+          I build agent tooling and trading infrastructure — LLM orchestration with
+          hard guardrails, reverse-engineered wire protocols, and small sharp tools
+          that do one thing well. The clever part suggests; the rulebook approves.
+        </p>
+        <div class="hero-links">
+          <a class="primary" href="/blog">read the field notes</a>
+          <a href="/projects">projects</a>
+          <a href="/about">about</a>
+        </div>
+      </div>
+      <div class="mast-meta">
+        last report <b>{latestDate}</b><br />
+        field notes <b>{posts.length}</b><br />
+        mode <b>paper-first</b><br />
+        <span class="clock">building in the open</span>
+      </div>
+    </section>
 
-  <div class="now">
-    <strong>Currently:</strong> running paper-first trading research across
-    FenixFire and KLAX26; iterating prediction-market infrastructure; and
-    keeping a Qidi 3D printer on a reverse-engineered UDP protocol.
+    <div class="tape reveal d1">
+      <div class="tape-track">
+        <span><span class="lbl">focus</span> <span class="v amb">agents × trading infra</span></span>
+        <span><span class="lbl">active</span> <span class="v">FenixFire · KLAX26 · polykali</span></span>
+        <span><span class="lbl">hardware</span> <span class="v teal">Qidi UDP/3000 · TARS</span></span>
+        <span><span class="lbl">stance</span> <span class="v green">receipts &gt; launch posts</span></span>
+      </div>
+    </div>
+
+    <div class="gauge-grid reveal d2">
+      <div class="card green">
+        <div class="card-label">execution mode</div>
+        <div class="card-value green">paper</div>
+        <div class="card-sub"><span class="dot"></span>real money stays off until the system earns it</div>
+      </div>
+      <div class="card">
+        <div class="card-label">active systems</div>
+        <div class="card-value amb">6</div>
+        <div class="card-sub"><span class="dot amb"></span>trading, agents, hardware</div>
+      </div>
+      <div class="card teal">
+        <div class="card-label">protocols reversed</div>
+        <div class="card-value teal">UDP</div>
+        <div class="card-sub"><span class="dot teal"></span>when the open path doesn't exist yet</div>
+      </div>
+      <div class="card rose">
+        <div class="card-label">field notes</div>
+        <div class="card-value">{posts.length}</div>
+        <div class="card-sub"><span class="dot amb"></span>caveats left in, on purpose</div>
+      </div>
+    </div>
+
+    <div class="now reveal d3">
+      <strong>Currently:</strong> running paper-first trading research across
+      FenixFire and KLAX26; iterating prediction-market infrastructure; and
+      keeping a Qidi 3D printer alive on a reverse-engineered UDP protocol.
+    </div>
+
+    {recent.length > 0 && (
+      <div class="reveal d4">
+        <div class="section-head">
+          <div class="sec-n">01</div>
+          <div class="sec-title">Recent field notes <em>— the journey behind the systems</em></div>
+          <div class="sec-meta"><a href="/blog">all posts →</a></div>
+        </div>
+        <ul class="entry-list">
+          {recent.map((post) => (
+            <li>
+              <div class="meta">
+                {post.data.pubDate.toISOString().slice(0, 10)}
+                {post.data.tags.slice(0, 3).map((t) => <span class="tag" style="margin-left:.6rem">{t}</span>)}
+              </div>
+              <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
+              <p>{post.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </div>
-
-  {posts.length > 0 && (
-    <>
-      <h2>Recent writing</h2>
-      <ul class="entry-list">
-        {posts.map((post) => (
-          <li>
-            <div class="meta">
-              {post.data.pubDate.toISOString().slice(0, 10)}
-            </div>
-            <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
-            <p>{post.data.description}</p>
-          </li>
-        ))}
-      </ul>
-    </>
-  )}
-
-  <p style="margin-top:2rem">
-    More on the <a href="/projects">projects</a> page, or check out the
-    <a href="/blog">blog</a> for the journey behind them.
-  </p>
 </Layout>

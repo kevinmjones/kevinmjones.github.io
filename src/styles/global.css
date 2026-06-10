@@ -586,6 +586,125 @@ img { max-width: 100%; height: auto; border: 1px solid var(--rule-soft); }
 .backlink { margin-top: 2.5rem; color: var(--fg-dim); }
 
 /* -------------------------------------------------------------------------
+ * Page-load reveal + micro-interactions
+ * ------------------------------------------------------------------------- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.reveal { animation: rise .6s cubic-bezier(.22,.8,.3,1) both; }
+.reveal.d1 { animation-delay: .08s; }
+.reveal.d2 { animation-delay: .16s; }
+.reveal.d3 { animation-delay: .26s; }
+.reveal.d4 { animation-delay: .38s; }
+
+.report-card,
+.project-card,
+.entry-list li {
+  transition: border-color .2s ease, transform .2s ease, background .2s ease;
+}
+.report-card:hover,
+.project-card:hover { transform: translateY(-2px); }
+
+/* -------------------------------------------------------------------------
+ * Home hero
+ * ------------------------------------------------------------------------- */
+
+.home-hero h1 .accent { color: var(--amber); font-style: italic; font-weight: 450; }
+.hero-links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.4rem; }
+.hero-links a {
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--fg-dim);
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: .55rem .95rem;
+}
+.hero-links a:hover { color: var(--amber); border-color: rgba(232,162,58,.55); background: rgba(232,162,58,.05); }
+.hero-links a.primary { color: var(--ink); background: var(--amber); border-color: var(--amber); font-weight: 700; }
+.hero-links a.primary:hover { background: var(--amber-2); color: var(--ink); }
+
+/* -------------------------------------------------------------------------
+ * Project cards
+ * ------------------------------------------------------------------------- */
+
+.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.2rem 0 2.6rem; }
+.project-card {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding: 1.2rem 1.3rem 1.3rem;
+  background: var(--paper);
+  border: 1px solid var(--rule-soft);
+  color: inherit;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  height: 2px; width: 100%;
+  background: linear-gradient(90deg, var(--accent, var(--amber)), transparent);
+  opacity: .7;
+}
+a.project-card { border-bottom: 1px solid var(--rule-soft); }
+a.project-card:hover { border-color: rgba(232,162,58,.55); }
+.project-card .proj-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: .65rem;
+}
+.project-card h3 { margin: 0; font-family: var(--font-serif); font-size: 1.45rem; font-weight: 420; letter-spacing: -.02em; }
+.project-card p { margin: 0 0 .9rem; font-size: .88rem; }
+.proj-stack { color: var(--fg-faint); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; }
+.proj-index {
+  position: absolute;
+  right: .8rem;
+  bottom: .35rem;
+  font-family: var(--font-serif);
+  font-size: 3.4rem;
+  font-weight: 300;
+  letter-spacing: -.05em;
+  color: var(--fg-ghost);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------
+ * About / contact strip
+ * ------------------------------------------------------------------------- */
+
+.contact-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin: 1.4rem 0 2.4rem;
+}
+.contact-strip a {
+  flex: 1 1 200px;
+  display: block;
+  padding: 1rem 1.15rem;
+  background: var(--paper);
+  border: 0;
+  color: var(--fg);
+  font-size: .82rem;
+}
+.contact-strip a:hover { background: rgba(232,162,58,.06); color: var(--amber); }
+.contact-strip .lbl {
+  display: block;
+  color: var(--fg-faint);
+  font-size: .6rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+
+/* -------------------------------------------------------------------------
  * Responsive
  * ------------------------------------------------------------------------- */
 
@@ -595,7 +714,7 @@ img { max-width: 100%; height: auto; border: 1px solid var(--rule-soft); }
   nav { flex-wrap: wrap; gap: .8rem; }
   .report-masthead { grid-template-columns: 1fr; }
   .mast-meta { text-align: left; min-width: 0; }
-  .gauge-grid, .grid-2, .grid-3, .grid-2-1, .blog-index .post-grid, .report-card.featured { grid-template-columns: 1fr; }
+  .gauge-grid, .grid-2, .grid-3, .grid-2-1, .blog-index .post-grid, .report-card.featured, .project-grid { grid-template-columns: 1fr; }
   .system-map { flex-direction: column; }
   .map-arrow { transform: rotate(90deg); }
   .section-head { grid-template-columns: auto 1fr; }
