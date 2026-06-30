@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OT Labs Daily Brief — June 30, 2026 (PM Edition)</title>
+<meta name="description" content="OT Labs Daily Brief, PM Edition — stack-ranked intelligence on AI governance, data privacy, AGI, regulatory compliance, frontier labs, and AI in China.">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --text: #d4d4d8;
+    --text-muted: #71717a;
+    --accent: #a78bfa;
+    --accent-strong: #c4b5fd;
+    --rank-1: #facc15;
+    --rank-2: #a78bfa;
+    --rank-3: #f97316;
+    --link: #93c5fd;
+    --link-hover: #bfdbfe;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+  header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  h1 { font-size: 2rem; font-weight: 700; color: #f4f4f5; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .subtitle { color: var(--accent-strong); font-size: 1.05rem; font-weight: 500; }
+  .date { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem; }
+  .edition { display: inline-block; margin-top: 0.75rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600; }
+
+  .intro {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    color: #a1a1aa;
+  }
+  .intro p { margin: 0 0 0.75rem; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  h2 { font-size: 1.4rem; font-weight: 600; color: #e4e4e7; margin: 2.5rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+  .story {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .story.rank-1 { border-left-color: var(--rank-1); }
+  .story.rank-2 { border-left-color: var(--rank-2); }
+  .story.rank-3 { border-left-color: var(--rank-3); }
+  .story.rank-4, .story.rank-5 { border-left-color: var(--accent); }
+
+  .rank-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 0.35rem; }
+  .story.rank-1 .rank-badge { color: var(--rank-1); }
+  .story.rank-2 .rank-badge { color: var(--rank-2); }
+  .story.rank-3 .rank-badge { color: var(--rank-3); }
+
+  .story h3 { font-size: 1.1rem; font-weight: 600; color: #e4e4e7; margin-bottom: 0.4rem; }
+  .story .source { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
+  .story .source a { color: var(--link); text-decoration: none; }
+  .story .source a:hover { color: var(--link-hover); text-decoration: underline; }
+  .story ul { list-style: none; padding: 0; margin-bottom: 1rem; }
+  .story ul li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  .story ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+  }
+  .story .takeaway {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--accent-strong);
+    font-style: italic;
+  }
+
+  .themes { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 1.75rem; margin-top: 1rem; }
+  .themes ol { margin: 0; padding-left: 1.2rem; }
+  .themes li { margin-bottom: 0.85rem; color: #a1a1aa; font-size: 0.95rem; }
+  .themes li:last-child { margin-bottom: 0; }
+  .themes strong { color: var(--accent-strong); }
+
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; }
+  footer a { color: var(--link); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>OT Labs Daily Brief</h1>
+  <div class="subtitle">AI Governance · Data Privacy · AGI · Regulatory Compliance · Frontier Labs · AI in China</div>
+  <div class="date">June 30, 2026</div>
+  <span class="edition">PM Edition</span>
+</header>
+
+<div class="intro">
+  <p>One month reshaped the rules of frontier AI. June 2026 turned US AI gatekeeping from a talking point into a working regime — an executive order, an export-control action against two Anthropic models, and a government-approval rollout for OpenAI's newest release, all inside thirty days. China answered within hours. Europe's high-risk compliance clock is now six weeks from zero.</p>
+  <p>This brief stack-ranks the ten stories that matter most for anyone building, governing, or buying AI — sourced, summarized in three bullets each, and closed with the cross-cutting themes shaping the second half of 2026.</p>
+</div>
+
+<h2>Top Stories — Stack Ranked</h2>
+
+<div class="story rank-1">
+  <div class="rank-badge">#1 · MOST SIGNIFICANT</div>
+  <h3>US AI gatekeeping becomes a working regime</h3>
+  <div class="source">Sources: <a href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/">The White House (EO 14409)</a> · <a href="https://www.digitalapplied.com/blog/us-government-gated-ai-models-new-release-paradigm-2026">Digital Applied</a> · <a href="https://www.aljazeera.com/economy/2026/6/1/us-says-ban-on-ai-chip-shipments-applies-to-chinese-firms-outside-china">Al Jazeera</a></div>
+  <ul>
+    <li>Executive Order 14409 (June 2) asks frontier labs to give the government up to 30 days of pre-release access to models with advanced cyber capability, and creates a "protected frontier model" designation coordinated through the Office of the National Cyber Director and OSTP.</li>
+    <li>In a single month the US issued the EO, an export-control action against Anthropic's Mythos 5 and Fable 5, and a vetted-partner rollout for OpenAI's GPT-5.6 Sol — three levers of a new gated-release paradigm.</li>
+    <li>Chip-shipment restrictions were extended to apply to Chinese firms operating outside China, widening the perimeter of the control regime.</li>
+  </ul>
+  <div class="takeaway">The release of a frontier model is now a regulated event, not a product launch. Governance moved upstream of the API.</div>
+</div>
+
+<div class="story rank-2">
+  <div class="rank-badge">#2</div>
+  <h3>China answers the export ban: Z.ai ships GLM-5.2 with "frontier intelligence belongs to everyone"</h3>
+  <div class="source">Sources: <a href="https://medium.com/@lssmj2014/the-day-china-answered-the-export-ban-with-frontier-intelligence-belongs-to-everyone-5d29fd0b8805">Medium</a> · <a href="https://cryptobriefing.com/china-open-source-ai-export-controls-srinivas/">Crypto Briefing</a> · <a href="https://techcrunch.com/2026/06/27/asian-ai-startups-launch-mythos-like-models-as-anthropics-export-ban-drags-on/">TechCrunch</a></div>
+  <ul>
+    <li>One day after the US export action, Zhipu (Z.ai brand) released the open-weight GLM-5.2 framed as a direct rebuttal — "frontier intelligence belongs to everyone."</li>
+    <li>Within roughly 30 hours a Chinese competitor had turned the export control into marketing, shipped a comparable model for free, and saw its stock jump ~32.8%.</li>
+    <li>Every enterprise depending on US providers was handed a concrete reason to build vendor independence — and a self-hostable alternative to do it with.</li>
+  </ul>
+  <div class="takeaway">Export controls meant to constrain China became its fastest go-to-market campaign.</div>
+</div>
+
+<div class="story rank-3">
+  <div class="rank-badge">#3</div>
+  <h3>Anthropic regains partial Mythos 5 access; GPT-5.6 Sol opens as a limited preview</h3>
+  <div class="source">Sources: <a href="https://llm-stats.com/llm-updates">LLM-Stats</a> · <a href="https://www.digitalapplied.com/blog/us-government-gated-ai-models-new-release-paradigm-2026">Digital Applied</a></div>
+  <ul>
+    <li>On June 26 Anthropic regained partial access to Mythos 5 after a two-week government-ordered blackout; OpenAI introduced GPT-5.6 Sol as a tightly limited preview the same window.</li>
+    <li>The government cleared Mythos 5 for roughly one hundred trusted American organizations and let OpenAI preview Sol to a small, individually vetted partner group.</li>
+    <li>Claude Fable 5, released June 9, had been suspended June 12 under the same export-control directive — a two-model whiplash inside three weeks.</li>
+  </ul>
+  <div class="takeaway">"General availability" is fragmenting into tiers of cleared access. Who you are now determines which model you can call.</div>
+</div>
+
+<div class="story rank-4">
+  <div class="rank-badge">#4</div>
+  <h3>EU AI Act high-risk deadline is six weeks out — and most organizations aren't ready</h3>
+  <div class="source">Sources: <a href="https://www.kiteworks.com/regulatory-compliance/eu-ai-act-deadline-compliance/">Kiteworks</a> · <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-eu-ai-act-high-risk-compliance-deadline-20/">Cloud Security Alliance</a> · <a href="https://www.legalnodes.com/article/eu-ai-act-2026-updates-compliance-requirements-and-business-risks">Legal Nodes</a></div>
+  <ul>
+    <li>August 2, 2026 is the binding enforcement date for high-risk AI obligations (Articles 9–17 for providers, Article 26 for deployers), with penalties up to €15M or 3% of global turnover.</li>
+    <li>Despite a November 2025 proposal to delay, the extension was not enacted — enterprises should treat August 2026 as operative.</li>
+    <li>Only 37% of organizations have AI governance policies in place while 80%+ of employees use unapproved AI tools — a compressing readiness gap.</li>
+  </ul>
+  <div class="takeaway">The first hard EU enforcement wall arrives in six weeks against a market that is two-thirds ungoverned.</div>
+</div>
+
+<div class="story rank-5">
+  <div class="rank-badge">#5</div>
+  <h3>EU tightens the Act: Digital Omnibus amendments pass, AI-content transparency code published</h3>
+  <div class="source">Sources: <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai">European Commission</a> · <a href="https://medium.com/@giovannicoletta/ai-compliance-what-changed-across-the-eu-in-june-2026-3-min-read-3c1f73bf40d0">Medium (Coletta)</a></div>
+  <ul>
+    <li>On June 16 the EU Parliament passed amendments to the AI Act, approving the Digital Omnibus package.</li>
+    <li>On June 10 the Commission published a voluntary Code of Practice on Transparency of AI-Generated Content, including a standard icon set for labeling AI output.</li>
+    <li>A new 60-member Scientific Panel and Advisory Forum (appointed June 1) now backs the AI Office and national authorities on enforcement.</li>
+  </ul>
+  <div class="takeaway">Europe is building the enforcement machinery — panels, codes, labels — that turns the Act from text into operational practice.</div>
+</div>
+
+<div class="story rank-6">
+  <div class="rank-badge">#6</div>
+  <h3>Bipartisan "Great American AI Act" draft drops amid a federal-vs-state turf war</h3>
+  <div class="source">Sources: <a href="https://www.akingump.com/en/insights/alerts/trump-administration-and-house-lawmakers-launch-new-ai-governance-initiatives">Akin</a> · <a href="https://www.vorys.com/publication-battle-for-ai-governance-white-houses-plan-to-centralize-ai-regulation-and-states-continuous-opposition">Vorys</a></div>
+  <ul>
+    <li>On June 4, Reps. Obernolte (R-CA) and Trahan (D-MA) released a discussion draft of the Great American AI Act — billed as the most comprehensive bipartisan US framework yet proposed.</li>
+    <li>It lands as the White House pushes to centralize AI regulation federally, with states mounting continuous opposition.</li>
+    <li>The EO's light-touch, voluntary commercial posture sits in tension with a Congress drafting harder rules — signaling unsettled US direction.</li>
+  </ul>
+  <div class="takeaway">US AI policy is a three-way negotiation — White House, Congress, and the states — with no settled center of gravity yet.</div>
+</div>
+
+<div class="story rank-7">
+  <div class="rank-badge">#7</div>
+  <h3>US data privacy shifts from law-creation to aggressive enforcement</h3>
+  <div class="source">Sources: <a href="https://www.omm.com/insights/alerts-publications/2026-data-security-and-privacy-compliance-checklist-key-us-state-law-updates-ai-rules-coppa-changes-and-global-data-protection-risks/">O'Melveny</a> · <a href="https://www.clarkhill.com/news-events/news/comprehensive-federal-privacy-bill-secure-data-act-introduced-by-house-republicans/">Clark Hill</a> · <a href="https://iapp.org/news/a/new-year-new-rules-us-state-privacy-requirements-coming-online-as-2026-begins">IAPP</a></div>
+  <ul>
+    <li>20 US states now have comprehensive privacy laws; Indiana, Kentucky, and Rhode Island took effect in 2026 with new assessment and transparency duties.</li>
+    <li>2026 marks the transition to enforcement: regulators now hold settlement precedents and technical expectations around opt-out signals, sensitive data, data sharing, and dark patterns.</li>
+    <li>The federal SECURE Data Act (introduced April 22) proposes a uniform national framework, while an updated COPPA rule set an April 22 children's-privacy compliance deadline.</li>
+  </ul>
+  <div class="takeaway">The penalty era of US privacy has begun — and children's data is the sharpest edge.</div>
+</div>
+
+<div class="story rank-8">
+  <div class="rank-badge">#8</div>
+  <h3>Open-weight gravity: Asian startups ship Mythos-like models as the ban drags on</h3>
+  <div class="source">Sources: <a href="https://techcrunch.com/2026/06/27/asian-ai-startups-launch-mythos-like-models-as-anthropics-export-ban-drags-on/">TechCrunch</a> · <a href="https://www.digitalapplied.com/blog/us-ai-gatekeeping-china-open-source-advantage-2026">Digital Applied</a></div>
+  <ul>
+    <li>With Anthropic's export ban unresolved, Asian AI startups are launching Mythos-class alternatives to capture stranded demand.</li>
+    <li>Open-weight families like DeepSeek V4-Pro and Qwen are already self-hostable anywhere, without US permission — the structural fallback when gated US models go dark.</li>
+    <li>Analysts argue each gated US release nudges global builders one step closer to the open-weight ecosystem China already leads.</li>
+  </ul>
+  <div class="takeaway">Every blackout is a customer-acquisition event for open weights. Scarcity at the top feeds abundance at the bottom.</div>
+</div>
+
+<div class="story rank-9">
+  <div class="rank-badge">#9</div>
+  <h3>The AGI debate sharpens: "already here" vs. "still Level 1"</h3>
+  <div class="source">Sources: <a href="https://techxplore.com/news/2026-02-artificial-general-intelligence-case-today.html">TechXplore</a> · <a href="https://www.cfr.org/articles/how-2026-could-decide-future-artificial-intelligence">Council on Foreign Relations</a> · <a href="https://ai-frontiers.org/articles/agis-last-bottlenecks">AI Frontiers</a></div>
+  <ul>
+    <li>UC San Diego researchers argue today's LLMs already meet key AGI tests — broad, flexible competence at or above human level on Turing-style and expert tasks.</li>
+    <li>Skeptics counter with DeepMind's 5-level framework, placing even 2026's best models at Level 1 ("emergent"); Hassabis still puts ~50% odds on AGI by 2030.</li>
+    <li>The pragmatic middle: "functional AGI" is already reshaping labor markets through autonomous agents, even as "full AGI" stays contested.</li>
+  </ul>
+  <div class="takeaway">The useful question has shifted from "when does AGI arrive?" to "how do we govern systems that already act like it?"</div>
+</div>
+
+<div class="story rank-10">
+  <div class="rank-badge">#10</div>
+  <h3>Shared safety baselines and agentic-AI governance frameworks emerge</h3>
+  <div class="source">Sources: <a href="https://aigovernance.com/news/ai-governance-weekly-june-19-2026">AI Governance Institute</a> · <a href="https://aigovernance.com/news">AI Governance Institute (News)</a></div>
+  <ul>
+    <li>The International AI Safety Report 2026 (June 15) establishes a shared baseline regulators are expected to cite in enforcement and procurement.</li>
+    <li>Cyberhaven published a structured agentic-AI governance framework (June 20) covering visibility into agent actions, data-layer access controls, and audit trails for regulatory review.</li>
+    <li>The throughline: as autonomous agents proliferate, governance is moving from model-level policy to action-level accountability.</li>
+  </ul>
+  <div class="takeaway">The next compliance frontier isn't what a model knows — it's what an agent does, and whether you can prove it.</div>
+</div>
+
+<h2>Cross-Cutting Themes</h2>
+<div class="themes">
+  <ol>
+    <li><strong>The gatekeeping paradox.</strong> Every gated US model pushes global builders one step toward the open-weight ecosystem China already dominates. Control at the frontier accelerates diffusion at the base.</li>
+    <li><strong>The compliance crunch is now.</strong> The EU's August 2 high-risk deadline and the US enforcement era arrive against a market where only ~37% of organizations have AI governance — readiness, not regulation, is the binding constraint.</li>
+    <li><strong>Vendor independence becomes default strategy.</strong> Export bans and gated access turned "what's our fallback model?" from a hypothetical into a board-level question. Self-hostable open weights are the hedge.</li>
+    <li><strong>AGI reframed from timeline to governance.</strong> With "functional AGI" already disrupting labor, the policy conversation is shifting from forecasting arrival to governing deployment.</li>
+    <li><strong>Governance moves to the action layer.</strong> Safety reports, agentic frameworks, and audit-trail requirements signal that the unit of accountability is becoming the agent's action — not the model's weights.</li>
+  </ol>
+</div>
+
+<footer>
+  <p>OT Labs Daily Brief · PM Edition · Compiled June 30, 2026. Stories stack-ranked by strategic significance for builders, governors, and buyers of AI. All items sourced from publicly reported coverage; summaries are editorial.</p>
+  <p>Earlier today: <a href="https://kevinmjones.github.io/daily-brief-2026-06-30.html">Daily Brief — June 30, 2026 (AM Edition)</a></p>
+</footer>
+</body>
+</html>
