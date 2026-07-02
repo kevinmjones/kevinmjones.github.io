@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OT Labs Daily Brief — July 2, 2026</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --text: #d4d4d8;
+    --text-muted: #71717a;
+    --accent: #a78bfa;
+    --accent-strong: #c4b5fd;
+    --rank-1: #facc15;
+    --rank-2: #a78bfa;
+    --rank-3: #f97316;
+    --link: #93c5fd;
+    --link-hover: #bfdbfe;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+  header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  h1 { font-size: 2rem; font-weight: 700; color: #f4f4f5; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .subtitle { color: var(--accent-strong); font-size: 1.05rem; font-weight: 500; }
+  .date { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem; }
+
+  .intro {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    color: #a1a1aa;
+  }
+  .intro p { margin: 0; }
+
+  h2 { font-size: 1.4rem; font-weight: 600; color: #e4e4e7; margin: 2.5rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+  .story {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .story.rank-1 { border-left-color: var(--rank-1); }
+  .story.rank-2 { border-left-color: var(--rank-2); }
+  .story.rank-3 { border-left-color: var(--rank-3); }
+  .story.rank-4, .story.rank-5 { border-left-color: var(--accent); }
+
+  .story h3 { font-size: 1.1rem; font-weight: 600; color: #e4e4e7; margin-bottom: 0.4rem; }
+  .story .source { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
+  .story .source a { color: var(--link); text-decoration: none; }
+  .story .source a:hover { color: var(--link-hover); text-decoration: underline; }
+  .story ul { list-style: none; padding: 0; margin-bottom: 1rem; }
+  .story ul li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  .story ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+  }
+  .story .takeaway {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--accent-strong);
+    font-style: italic;
+  }
+  .story .takeaway strong { font-style: normal; color: var(--accent); }
+
+  .themes {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2.5rem 0;
+  }
+  .themes h2 { margin-top: 0; border-bottom: none; padding-bottom: 0; margin-bottom: 1.25rem; }
+  .theme { margin-bottom: 1.25rem; }
+  .theme:last-child { margin-bottom: 0; }
+  .theme h3 { font-size: 0.95rem; font-weight: 600; color: #e4e4e7; margin-bottom: 0.3rem; }
+  .theme p { color: #a1a1aa; font-size: 0.9rem; line-height: 1.6; }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 3rem 0 0; }
+
+  footer {
+    margin-top: 2rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.7;
+  }
+  footer a { color: var(--link); text-decoration: none; }
+  footer a:hover { color: var(--link-hover); text-decoration: underline; }
+
+  .rank-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.15em 0.5em;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    background: var(--border);
+    color: var(--text-muted);
+  }
+  .rank-1 .rank-badge { background: rgba(250,204,21,0.12); color: var(--rank-1); }
+  .rank-2 .rank-badge { background: rgba(167,139,250,0.12); color: var(--rank-2); }
+  .rank-3 .rank-badge { background: rgba(249,115,22,0.12); color: var(--rank-3); }
+
+  @media (max-width: 600px) {
+    body { padding: 1.5rem 1rem 4rem; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>OT Labs Daily Brief</h1>
+  <div class="subtitle">AI Governance, Frontier Labs, Data Privacy &amp; the Global AI Race</div>
+  <div class="date">July 2, 2026</div>
+</header>
+
+<div class="intro">
+  <p>The gate swings both ways today. Washington formally <em>lifts</em> the export controls on Anthropic&rsquo;s Fable 5 and Mythos 5 &mdash; but only in exchange for binding, enforceable security commitments, turning yesterday&rsquo;s emergency shutdown into a permanent playbook. Below the model news, the regulatory ground shifted hard this week: the EU Council gave the AI Act delay its <em>final</em> green light, two US state privacy laws flipped live overnight (one with a first-of-its-kind LLM-training disclosure rule), and the FTC opened a new front on AI &ldquo;accuracy.&rdquo; Ten stories, stack-ranked by how much they move the board.</p>
+</div>
+
+<h2>Stack-Ranked Stories</h2>
+
+<article class="story rank-1">
+  <h3>1. US Formally Lifts Fable 5 &amp; Mythos 5 Export Controls &mdash; In Exchange for Binding Security Commitments <span class="rank-badge">Top Story</span></h3>
+  <div class="source">Sources: <a href="https://www.aljazeera.com/economy/2026/7/1/us-lifts-restrictions-on-powerful-ai-models-fable-mythos-anthropic-says" target="_blank" rel="noopener">Al Jazeera</a>, Jul 1; <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener">Anthropic</a></div>
+  <ul>
+    <li>The US Commerce Department removed the June 12 export-control directive that had forced Anthropic to cut off <em>all</em> foreign nationals &mdash; including its own overseas staff &mdash; from Fable 5 and Mythos 5; global access is being restored July 1&ndash;2, ending a ~19-day shutdown.</li>
+    <li>Secretary Howard Lutnick said Anthropic will no longer need an export license after agreeing to proactively detect model-security risks, collaborate with the government on standards for future models, and report malicious activity &mdash; a negotiated compliance regime, not a one-off reprieve.</li>
+    <li>Mythos 5 remains the safeguards-lifted variant for authorized cyber-defense, drug/protein-design and genomics users; Fable 5 is the general-access model, both at $10/$50 per MTok.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it leads:</strong> Yesterday&rsquo;s brief anticipated the return; today we have the <em>terms</em> &mdash; and they are the real story. The government didn&rsquo;t just switch a model back on; it converted an emergency shutdown into a standing framework of enforceable security obligations. Every frontier lab now knows the price of shipping: pre-agreed, auditable commitments backed by the off switch.</div>
+</article>
+
+<article class="story rank-2">
+  <h3>2. Anthropic Ships Claude Sonnet 5 &mdash; Near-Frontier Agents at ~1/5 the Price, With an Interpretability-Based Safety Case <span class="rank-badge">Rank 2</span></h3>
+  <div class="source">Sources: <a href="https://techcrunch.com/2026/06/30/anthropic-launches-claude-sonnet-5-as-a-cheaper-way-to-run-agents/" target="_blank" rel="noopener">TechCrunch</a>, Jun 30; <a href="https://siliconangle.com/2026/06/30/anthropic-launches-claude-sonnet-5-coding-safety-upgrades/" target="_blank" rel="noopener">SiliconANGLE</a>, Jun 30</div>
+  <ul>
+    <li>Sonnet 5 is Anthropic&rsquo;s most agentic model yet &mdash; 63.2% SWE-bench Pro, 81.2% OSWorld-Verified, 80.4% Terminal-Bench 2.1 (beating Opus 4.8&rsquo;s 74.6%), and 1,618 Elo on GDPval-AA v2 knowledge work &mdash; now the default in Claude Code.</li>
+    <li>Introductory pricing is $2/$10 per MTok through Aug 31 ($3/$15 after), with a 1M-token context and 128k max output, pushing near-flagship capability to roughly one-fifth of top-tier cost.</li>
+    <li>Because recent Claude models increasingly exhibit &ldquo;evaluation awareness,&rdquo; Anthropic leaned on white-box interpretability methods for its safety assessment, reporting better prompt-injection robustness, malicious-request refusal, and lower hallucination/sycophancy than Sonnet 4.6.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> Two firsts in one launch. Commercially, cheap agentic capability is the wedge that moves autonomous agents from demo to default in the enterprise. For governance, it&rsquo;s the first flagship release to fold mechanistic interpretability into the deployment safety case &mdash; a precedent for how &ldquo;eval-aware&rdquo; models must be judged.</div>
+</article>
+
+<article class="story rank-3">
+  <h3>3. EU Council Gives Final Green Light to AI Act &ldquo;Digital Omnibus&rdquo; &mdash; High-Risk Deadlines Slip to 2027&ndash;2028 <span class="rank-badge">Rank 3</span></h3>
+  <div class="source">Sources: <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/06/29/artificial-intelligence-council-gives-final-green-light-to-simplify-and-streamline-rules/" target="_blank" rel="noopener">Council of the EU</a>, Jun 29; <a href="https://www.morganlewis.com/pubs/2026/06/eu-approves-delays-and-other-amendments-to-certain-eu-ai-act-obligations-what-businesses-should-know" target="_blank" rel="noopener">Morgan Lewis</a></div>
+  <ul>
+    <li>Following the Parliament&rsquo;s June 16 vote, the Council granted <em>final</em> approval on June 29 to the AI Act simplification package; it publishes in the Official Journal shortly and enters into force three days later.</li>
+    <li>Stand-alone Annex III high-risk obligations move from Aug 2, 2026 to Dec 2, 2027; high-risk AI embedded in regulated products shifts to Aug 2, 2028; the regulatory-sandbox deadline slips to Aug 2, 2027.</li>
+    <li>Crucially, the transparency and generative-content labeling obligations remain due on the original Aug 2, 2026 date &mdash; and a new prohibition on AI-generated non-consensual intimate imagery/CSAM takes effect December 2026.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> Yesterday this was a Parliament vote; now it is law. The world&rsquo;s flagship AI regime just bought builders ~16 months on high-risk compliance &mdash; but the August 2026 transparency clock is still ticking. Anyone scoping global AI governance should re-baseline both dates today.</div>
+</article>
+
+<article class="story rank-4">
+  <h3>4. Connecticut &amp; Virginia Privacy Laws Go Live July 1 &mdash; Connecticut Adds a First-of-Kind LLM-Training Disclosure Mandate</h3>
+  <div class="source">Sources: <a href="https://www.beneschlaw.com/insight/connecticut-broadens-data-privacy-act-requirements-effective-july-1-2026/" target="_blank" rel="noopener">Benesch</a>, Jun 3; <a href="https://www.regulatoryoversight.com/2026/04/virginia-becomes-third-state-to-ban-sale-of-consumers-precise-geolocation-data/" target="_blank" rel="noopener">Troutman Pepper</a></div>
+  <ul>
+    <li>Connecticut&rsquo;s CTDPA amendments took effect July 1: the coverage threshold drops to 35,000 residents (from 100,000), &ldquo;sensitive data&rdquo; now includes neural, biometric/genetic, financial-account and government-ID data, and privacy notices must state whether the entity uses or sells personal data to train large language models.</li>
+    <li>Virginia&rsquo;s SB 338 also went live July 1, banning the sale of &ldquo;precise geolocation data&rdquo; (within a 1,750-foot radius) &mdash; making Virginia the third state, after Maryland and Oregon, to do so.</li>
+    <li>Connecticut&rsquo;s parallel geolocation-sale ban and data-broker registry follow October 1, 2026; profiling impact-assessment duties attach to processing created on/after August 1, 2026.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> Connecticut just made &ldquo;do you train LLMs on this data?&rdquo; a mandatory line item in customer-facing privacy notices &mdash; a concrete new compliance surface aimed squarely at AI vendors. The state patchwork isn&rsquo;t theoretical; two more tiles flipped live overnight.</div>
+</article>
+
+<article class="story rank-5">
+  <h3>5. FTC Opens a New Front: Proposed Policy Statement on AI &ldquo;Accuracy&rdquo; and Ideological Manipulation</h3>
+  <div class="source">Sources: <a href="https://www.ftc.gov/news-events/news/press-releases/2026/07/ftc-seeks-public-comment-policy-statement-addressing-ai-accuracy" target="_blank" rel="noopener">FTC</a>, early Jul; <a href="https://www.mlex.com/mlex/articles/2496274/us-ftc-proposes-policy-statement-addressing-ai-accuracy" target="_blank" rel="noopener">MLex</a></div>
+  <ul>
+    <li>The FTC (2&ndash;0) proposes a policy statement arguing that AI firms distorting model outputs for undisclosed &ldquo;ideological objectives&rdquo; may deceive consumers under Section 5 of the FTC Act; public comment runs through July 31, 2026.</li>
+    <li>Chairman Andrew Ferguson framed it as advancing the administration&rsquo;s goal of &ldquo;expanding America&rsquo;s global dominance in AI&rdquo; and probing &ldquo;subversion of AI systems for ideological ends.&rdquo;</li>
+    <li>The statement stems from a December 2025 executive order directing the FTC to address state laws requiring alteration of &ldquo;truthful outputs of AI models.&rdquo;</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> The FTC is reframing its consumer-protection authority around AI &ldquo;bias/ideology&rdquo; theories &mdash; a new, politically charged compliance vector for model developers. Even as federal privacy enforcement softens (see yesterday&rsquo;s X petition), this opens a different lever on the same firms.</div>
+</article>
+
+<article class="story rank-4">
+  <h3>6. Google DeepMind Launches Deep Research and Deep Research Max on Gemini 3.1 Pro</h3>
+  <div class="source">Sources: <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/next-generation-gemini-deep-research/" target="_blank" rel="noopener">Google</a>; <a href="https://venturebeat.com/technology/googles-new-deep-research-and-deep-research-max-agents-can-search-the-web-and-your-private-data" target="_blank" rel="noopener">VentureBeat</a></div>
+  <ul>
+    <li>Deep Research Max uses extended test-time compute for long-horizon autonomous research, built on Gemini 3.1 Pro with MCP support to connect private data and native chart/infographic generation.</li>
+    <li>Benchmarks jumped sharply: 93.3% on DeepSearchQA (from 66.1% in December) and 54.6% on Humanity&rsquo;s Last Exam (from 46.4%).</li>
+    <li>It&rsquo;s in public preview on paid Gemini API tiers, targeting developers automating heavy research workflows.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> Agentic &ldquo;deep research&rdquo; is now a three-way fight (Google, OpenAI, Anthropic), and MCP-native access to a customer&rsquo;s <em>private</em> data is the differentiator that turns a demo into an enterprise workflow &mdash; and a governance question about where that data flows.</div>
+</article>
+
+<article class="story rank-4">
+  <h3>7. DeepMind&rsquo;s &ldquo;AI Control Roadmap&rdquo; Treats AI Agents as Insider Threats</h3>
+  <div class="source">Sources: <a href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank" rel="noopener">Google DeepMind</a>, Jun 18; <a href="https://www.techtimes.com/articles/318758/20260620/google-deepmind-ai-control-roadmap-when-alignment-fails-defense-depth-takes-over.htm" target="_blank" rel="noopener">TechTimes</a>, Jun 20</div>
+  <ul>
+    <li>Authored by Rohin Shah and Four Flynn, the roadmap argues alignment training alone can&rsquo;t guarantee agents stay under human control, so &ldquo;defense-in-depth&rdquo; structural containment must be built before more capable models arrive.</li>
+    <li>It lists 15 risk-reduction mechanisms &mdash; from network-activity logs to real-time neuron-activation monitoring &mdash; and introduces TRAIT&amp;R, a taxonomy of adversarial tactics across loss-of-control, operational sabotage, and direct harm.</li>
+    <li>The framing treats untrusted AI agents as potential &ldquo;insider threats,&rdquo; complementing DeepMind&rsquo;s April Frontier Safety Framework update.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> A leading lab conceding alignment is <em>insufficient</em> and pivoting to security-style containment reframes AI safety as an operational risk-management problem &mdash; one enterprises and regulators can actually audit, and one that pairs directly with the agentic products shipping this week.</div>
+</article>
+
+<article class="story rank-5">
+  <h3>8. Nvidia H200s Cleared to ~10 Chinese Firms &mdash; But Beijing&rsquo;s Own Gatekeeping Stalls the Deals</h3>
+  <div class="source">Sources: <a href="https://www.trendforce.com/news/2026/05/14/news-u-s-reportedly-approves-nvidia-h200-sales-to-10-china-firms-including-alibaba-bytedance-but-deals-stall/" target="_blank" rel="noopener">TrendForce</a>; <a href="https://www.tomshardware.com/tech-industry/semiconductors/nvidia-prepares-h200-shipments-to-china-as-chip-war-lines-blur" target="_blank" rel="noopener">Tom&rsquo;s Hardware</a></div>
+  <ul>
+    <li>US Commerce approved roughly 10 Chinese firms &mdash; including Alibaba, Tencent, ByteDance and JD.com &mdash; to buy Nvidia H200s, with a prepared shipment of ~82,000 GPUs under a deal requiring the US to collect 25% of chip-sale revenue.</li>
+    <li>As of mid-2026 no deliveries had materialized: Beijing raised security concerns over the revenue-sharing structure and has discouraged purchases in favor of domestic chips.</li>
+    <li>It pairs with the standing BIS rule that AI-chip licensing applies to any China-headquartered firm and its overseas subsidiaries &mdash; the front door is ajar, but the buyer is hesitating.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> The chip war&rsquo;s newest twist isn&rsquo;t another US restriction &mdash; it&rsquo;s <em>Beijing</em> gating demand. A novel 25%-revenue tax plus a domestic-first push may keep the China market effectively closed to Nvidia regardless of Washington&rsquo;s approvals, steering demand to Huawei and Cambricon.</div>
+</article>
+
+<article class="story rank-4">
+  <h3>9. China&rsquo;s Open-Weight Surge Continues: Kimi K2.7-Code, GLM-5.2 at #2, Qwen Past 1B Downloads</h3>
+  <div class="source">Sources: <a href="https://www.marktechpost.com/2026/06/12/moonshot-ai-releases-kimi-k2-7-code-a-coding-model-reporting-21-8-on-kimi-code-bench-v2-over-k2-6/" target="_blank" rel="noopener">MarkTechPost</a>, Jun 12; <a href="https://benchlm.ai/best/chinese-models" target="_blank" rel="noopener">BenchLM</a></div>
+  <ul>
+    <li>Moonshot shipped Kimi K2.7-Code (1T-param MoE, 32B active, 256K context) under a modified MIT license, claiming +21.8% over K2.6 on Kimi Code Bench v2 while using ~30% fewer reasoning tokens &mdash; its fifth major release in under a year.</li>
+    <li>Zhipu/Z.ai&rsquo;s MIT-licensed GLM-5.2 sits at #2 open-weight (~51 on the Artificial Analysis Intelligence Index) at roughly one-sixth of GPT-5.5&rsquo;s cost; Chinese models held five of the global top-10 slots in June.</li>
+    <li>Alibaba&rsquo;s Qwen crossed 1 billion cumulative Hugging Face downloads &mdash; the fastest any open-source family has reached that milestone.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> Every gate Washington closes raises the value of the open-weight tier China now dominates. Qwen&rsquo;s distribution lead is turning open models into a soft-power and de facto standards-setting lever &mdash; the back door with no lock, at global scale.</div>
+</article>
+
+<article class="story">
+  <h3>10. UN Global Dialogue on AI Governance Convenes in Geneva, July 6&ndash;7</h3>
+  <div class="source">Source: <a href="https://www.un.org/global-dialogue-ai-governance/en" target="_blank" rel="noopener">United Nations</a>; context: <a href="https://oecd.ai/en/mcm-2026" target="_blank" rel="noopener">OECD.AI</a></div>
+  <ul>
+    <li>The inaugural session of the UN&rsquo;s Global Dialogue on AI Governance &mdash; the first universal, government-plus-stakeholder UN platform for AI cooperation &mdash; opens in Geneva July 6&ndash;7, with a second session set for New York in May 2027.</li>
+    <li>It runs alongside recent OECD moves: a streamlined Hiroshima AI Process reporting framework for SMEs and a new AI Literacy Framework for schools.</li>
+    <li>The OECD AI Policy Observatory now tracks 1,000+ initiatives across 69 countries; the OECD AI Principles have 46 adherents.</li>
+  </ul>
+  <div class="takeaway"><strong>Why it matters:</strong> A formal UN-level governance track is starting up precisely as the US pivots to deregulation and preemption. That divergence &mdash; multilateral standards abroad, deregulatory momentum at home &mdash; is the fault line any company selling AI globally will have to straddle.</div>
+</article>
+
+<section class="themes">
+  <h2>Key Themes</h2>
+  <div class="theme">
+    <h3>The off switch became a contract</h3>
+    <p>Fable 5 and Mythos 5 return not because the risk vanished, but because Anthropic signed up to enforceable security commitments. The emergency mechanism of mid-June is now a standing template: shipping a frontier model means pre-agreed, auditable obligations with the government&rsquo;s hand on the release valve.</p>
+  </div>
+  <div class="theme">
+    <h3>Agents get cheaper and scarier in the same week</h3>
+    <p>Sonnet 5 pushes autonomous-agent capability to ~1/5 the price just as DeepMind publishes a roadmap treating those same agents as insider threats. Capability and containment are advancing in lockstep &mdash; and interpretability is quietly becoming part of the deployment safety case, not just a research topic.</p>
+  </div>
+  <div class="theme">
+    <h3>The regulatory calendar keeps splitting</h3>
+    <p>The EU delays high-risk rules to 2027&ndash;2028 while keeping August 2026 transparency live; Connecticut and Virginia flip new privacy duties on overnight; the FTC opens an &ldquo;AI accuracy&rdquo; front. The through-line: fewer single deadlines, more overlapping clocks that compliance teams must track in parallel.</p>
+  </div>
+  <div class="theme">
+    <h3>Data use is the new disclosure battleground</h3>
+    <p>Connecticut now forces vendors to say whether they train LLMs on personal data. As models get hungrier for training data and agents reach into private stores (see Gemini Deep Research Max), &ldquo;what happens to my data&rdquo; is migrating from fine print to mandated, front-of-notice disclosure.</p>
+  </div>
+  <div class="theme">
+    <h3>The chip war&rsquo;s new gatekeeper is Beijing</h3>
+    <p>For the first time the binding constraint on Nvidia&rsquo;s China sales may be Chinese policy, not American. A 25%-revenue tax and a domestic-first push are doing what export controls alone couldn&rsquo;t &mdash; and every closed door abroad makes China&rsquo;s open-weight lead (Qwen, GLM, Kimi) more valuable.</p>
+  </div>
+</section>
+
+<hr>
+
+<footer>
+  <p>Researched and written by <strong>OT Labs Comms</strong>. Sources are linked inline. Claims sourced to public reporting from June 28 &ndash; July 2, 2026; a few items originated earlier in June but reached resolution or peak relevance in this window. Continuity notes reference the <a href="https://kevinmjones.github.io/daily-brief-2026-07-01.html">July 1 edition</a>.</p>
+  <p>Published by <strong>OT Labs</strong> &mdash; <a href="https://otlabs.dev">otlabs.dev</a></p>
+</footer>
+
+</body>
+</html>
