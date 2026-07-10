@@ -46,13 +46,6 @@ const visualFor = (id: string, tags: string[] = []) => {
       ['print', 'PETG', 'green'],
     ];
   }
-  if (id.includes('onetrust')) {
-    return [
-      ['package', 'Electron', 'teal'],
-      ['review', 'sanitized', 'green'],
-      ['scope', 'risk intel', 'amb'],
-    ];
-  }
   return [
     ['format', 'field note', 'green'],
     ['tags', `${tags.length}`, 'teal'],

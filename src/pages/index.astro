@@ -5,97 +5,103 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const recent = posts.slice(0, 4);
-const latestDate = posts[0]?.data.pubDate.toISOString().slice(0, 10) ?? '—';
+
+const featuredProjects = [
+  {
+    name: 'FenixFire',
+    label: 'Trading system',
+    description: 'A paper-only stock-trading robot with separate analyst, risk, and execution roles.',
+    href: '/blog/fenixfire-careful-trading-robot/',
+  },
+  {
+    name: 'KLAX26',
+    label: 'Forecasting',
+    description: 'A weather-market research system built around provenance, calibrated forecasts, and careful execution.',
+    href: '/blog/klax26-weather-computer-family-guide/',
+  },
+  {
+    name: 'qidi-research',
+    label: 'Reverse engineering',
+    description: 'A Unix toolchain for a 3D printer built by mapping its proprietary UDP protocol.',
+    href: 'https://github.com/kevinmjones/qidi-research',
+  },
+  {
+    name: 'TARS',
+    label: 'Hardware',
+    description: 'Servo control, hardware mocks, and real-world drivers for a working robot replica.',
+    href: '/projects',
+  },
+];
 ---
 <Layout title="Kevin Jones">
-  <div class="home-hero">
-    <section class="report-masthead reveal">
-      <div>
-        <div class="eyebrow">kevinmjones / operations console</div>
-        <h1>Systems that <span class="accent">earn</span> their autonomy.</h1>
-        <p class="mast-sub">
-          I build agent tooling and trading infrastructure — LLM orchestration with
-          hard guardrails, reverse-engineered wire protocols, and small sharp tools
-          that do one thing well. The clever part suggests; the rulebook approves.
+  <div class="home-page">
+    <section class="home-hero-panel reveal" aria-labelledby="home-title">
+      <div class="home-contents">
+        <div class="micro-label">Kevin Jones · independent builder</div>
+        <nav aria-label="Home contents">
+          <a href="#work"><span>01</span> Work</a>
+          <a href="#notes"><span>02</span> Field notes</a>
+          <a href="/about"><span>03</span> About</a>
+        </nav>
+      </div>
+      <div class="home-intro">
+        <div class="micro-label blue">Systems · agents · markets · hardware</div>
+        <h1 id="home-title">I build systems that <span>earn</span> their autonomy.</h1>
+        <p>
+          Agent tooling, trading infrastructure, reverse-engineered protocols, and
+          small sharp tools. The clever part suggests; the rulebook approves.
         </p>
         <div class="hero-links">
-          <a class="primary" href="/blog">read the field notes</a>
-          <a href="/projects">projects</a>
-          <a href="/about">about</a>
+          <a class="primary" href="#work">Explore the work →</a>
+          <a href="/about">About Kevin</a>
         </div>
       </div>
-      <div class="mast-meta">
-        last report <b>{latestDate}</b><br />
-        field notes <b>{posts.length}</b><br />
-        mode <b>paper-first</b><br />
-        <span class="clock">building in the open</span>
+      <div class="hero-foot">
+        <span>Building in the open</span>
+        <span>Python · TypeScript · hardware</span>
+        <span>Based in the United States</span>
       </div>
     </section>
 
-    <div class="tape reveal d1">
-      <div class="tape-track">
-        <span><span class="lbl">focus</span> <span class="v amb">agents × trading infra</span></span>
-        <span><span class="lbl">active</span> <span class="v">FenixFire · KLAX26 · polykali</span></span>
-        <span><span class="lbl">hardware</span> <span class="v teal">Qidi UDP/3000 · TARS</span></span>
-        <span><span class="lbl">stance</span> <span class="v green">receipts &gt; launch posts</span></span>
+    <section class="home-index reveal d1" aria-label="At a glance">
+      <div class="index-title"><span>00</span><h2>At a glance</h2></div>
+      <div class="signal-grid">
+        <a href="/projects"><span class="signal-arrow">→</span><b>Current work</b><em>agents, markets, protocols</em></a>
+        <a href="/blog"><span class="signal-arrow">→</span><b>Field notes</b><em>{posts.length} reports with the caveats left in</em></a>
+        <a href="/about"><span class="signal-arrow">→</span><b>Operating mode</b><em>paper-first, evidence-led</em></a>
       </div>
-    </div>
+    </section>
 
-    <div class="gauge-grid reveal d2">
-      <div class="card green">
-        <div class="card-label">execution mode</div>
-        <div class="card-value green">paper</div>
-        <div class="card-sub"><span class="dot"></span>real money stays off until the system earns it</div>
+    <section class="home-index reveal d2" id="work">
+      <div class="index-title">
+        <span>01</span><h2>Selected work</h2><a href="/projects">All projects →</a>
       </div>
-      <div class="card">
-        <div class="card-label">active systems</div>
-        <div class="card-value amb">6</div>
-        <div class="card-sub"><span class="dot amb"></span>trading, agents, hardware</div>
+      <div class="editorial-list project-list">
+        {featuredProjects.map((project, index) => (
+          <a href={project.href}>
+            <span class="row-id">P—{String(index + 1).padStart(2, '0')}</span>
+            <span class="row-copy"><small>{project.label}</small><strong>{project.name}</strong><em>{project.description}</em></span>
+            <span class="row-arrow">↗</span>
+          </a>
+        ))}
       </div>
-      <div class="card teal">
-        <div class="card-label">protocols reversed</div>
-        <div class="card-value teal">UDP</div>
-        <div class="card-sub"><span class="dot teal"></span>when the open path doesn't exist yet</div>
-      </div>
-      <div class="card rose">
-        <div class="card-label">field notes</div>
-        <div class="card-value">{posts.length}</div>
-        <div class="card-sub"><span class="dot amb"></span>caveats left in, on purpose</div>
-      </div>
-    </div>
-
-    <div class="now reveal d3" style="margin-bottom:1rem">
-      <strong>Family guides:</strong> plain-English overviews of what I'm working on —
-      <a href="/guides/fenixfire.html">How Kevin's trading robot works</a> ·
-      <a href="/guides/klax26.html">What Kevin's weather computer actually does</a>
-    </div>
-
-    <div class="now reveal d3">
-      <strong>Currently:</strong> running paper-first trading research across
-      FenixFire and KLAX26; iterating prediction-market infrastructure; and
-      keeping a Qidi 3D printer alive on a reverse-engineered UDP protocol.
-    </div>
+    </section>
 
     {recent.length > 0 && (
-      <div class="reveal d4">
-        <div class="section-head">
-          <div class="sec-n">01</div>
-          <div class="sec-title">Recent field notes <em>— the journey behind the systems</em></div>
-          <div class="sec-meta"><a href="/blog">all posts →</a></div>
+      <section class="home-index reveal d3" id="notes">
+        <div class="index-title">
+          <span>02</span><h2>Latest field notes</h2><a href="/blog">Full archive →</a>
         </div>
-        <ul class="entry-list">
-          {recent.map((post) => (
-            <li>
-              <div class="meta">
-                {post.data.pubDate.toISOString().slice(0, 10)}
-                {post.data.tags.slice(0, 3).map((t) => <span class="tag" style="margin-left:.6rem">{t}</span>)}
-              </div>
-              <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
-              <p>{post.data.description}</p>
-            </li>
+        <div class="editorial-list note-list">
+          {recent.map((post, index) => (
+            <a href={`/blog/${post.id}`}>
+              <span class="row-id">N—{String(index + 1).padStart(2, '0')}</span>
+              <span class="row-copy"><small>{post.data.pubDate.toISOString().slice(0, 10)}</small><strong>{post.data.title}</strong><em>{post.data.description}</em></span>
+              <span class="row-arrow">→</span>
+            </a>
           ))}
-        </ul>
-      </div>
+        </div>
+      </section>
     )}
   </div>
 </Layout>

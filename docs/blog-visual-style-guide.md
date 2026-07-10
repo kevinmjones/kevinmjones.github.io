@@ -31,8 +31,8 @@ The blog should read like a field report, not a plain article: dark analytical c
 --fg-dim: #a39d8f;     /* readable secondary */
 --fg-faint: #6c6960;   /* labels */
 --amber: #e8a23a;      /* primary accent */
---teal: #5fb6ad;       /* secondary/technical */
---green: #86b06b;      /* good/success */
+--teal: #9ed8ff;       /* secondary/technical */
+--green: #9ed8ff;      /* legacy success alias; renders baby blue */
 --red: #d96157;        /* negative/warning */
 --rose: #c98b9c;       /* alternate series */
 --warn: #f0c04a;       /* caution */
@@ -114,7 +114,7 @@ Used for caveats and constraints.
 For visualizing before/after, score deltas, progress.
 
 - Use CSS bars instead of canvas where possible.
-- Amber = primary; teal = comparison; green/red = outcome.
+- Light orange = primary; baby blue = comparison and positive outcome.
 
 ## Content refactor rules
 
